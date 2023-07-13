@@ -1,26 +1,41 @@
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import permissions
-from rest_framework import viewsets
-from rest_framework import renderers
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
-from .models import Issue
+from projects.permissions import HasProjectPermission, IsAuthorOrReadOnly
+from projects.models import Project
 from .serializers import IssueSerializer
-from projects.permissions import IsOwnerOrReadOnly
 
 
-class IssueViewSet(viewsets.ModelViewSet):
-    queryset = Issue.objects.all()
+class IssueViewSet(ModelViewSet):
+    """
+    ViewSet for the Issue model.
+
+    Serializer:
+        IssueSerializer: The serializer class for the Issue model.
+
+    Permissions:
+        IsAuthenticated: Allows access only to authenticated users.
+        HasProjectPermission: Allows access only to users with project-specific permissions.
+        IsAuthorOrReadOnly: Allows read-only access to non-authors of the issue.
+
+    Methods:
+        get_queryset(self): Retrieves the queryset of issues associated with a project.
+    """
+
     serializer_class = IssueSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
-        IsOwnerOrReadOnly,
+        IsAuthenticated,
+        HasProjectPermission,
+        IsAuthorOrReadOnly,
     ]
 
-    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        snippet = self.get_object()
-        return Response(snippet.highlighted)
+    def get_queryset(self):
+        """
+        Retrieves the queryset of issues associated with a project.
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        Returns:
+            QuerySet: The queryset of issues.
+        """
+        project = Project.objects.get(pk=self.kwargs['projects_id'])
+        queryset = project.issues.all()
+        return queryset

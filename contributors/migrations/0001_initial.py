@@ -10,12 +10,12 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("issues", "0001_initial"),
+        ("projects", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Comment",
+            name="Contributor",
             fields=[
                 (
                     "id",
@@ -26,27 +26,22 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("description", models.TextField(max_length=2048)),
-                ("created_datetime", models.DateTimeField(auto_now_add=True)),
-                ("modified_datetime", models.DateTimeField(auto_now=True)),
                 (
-                    "author_user",
+                    "project",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.RESTRICT,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="contributors",
+                        to="projects.project",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="contributor_id",
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),
-                (
-                    "issue",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        related_name="comments",
-                        to="issues.issue",
-                    ),
-                ),
             ],
-            options={
-                "ordering": ["created_datetime"],
-            },
         ),
     ]

@@ -1,36 +1,79 @@
 from rest_framework import serializers
-from pygments import highlight
-from pygments.formatters.html import HtmlFormatter
-from pygments.lexers import get_lexer_by_name
 
 from .models import Issue
 
 
 class IssueSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
-    highlight = serializers.HyperlinkedIdentityField(
-        view_name='issue-highlight', format='html'
-    )
+    """
+    Serializer for the Issue model.
+
+    Fields:
+        url (HyperlinkedIdentityField): The endpoint URL for the issue.
+        id (IntegerField): The unique identifier for the issue.
+        title (CharField): The title of the issue.
+        description (TextField): The description of the issue.
+        tag_choices (CharField): The tag choice for the issue (Bug, Feature, Task).
+        priority_choices (CharField): The priority choice for the issue (Low, Medium, High).
+        status_choices (CharField): The status choice for the issue (To do, In progress, Finished).
+        author (PrimaryKeyRelatedField): The user who created the issue.
+        assigned_user (PrimaryKeyRelatedField): The user assigned to the issue.
+        created_time (DateTimeField): The timestamp when the issue was created.
+        modified_datetime (DateTimeField): The timestamp when the issue was last modified.
+
+    Read-Only Fields:
+        author (PrimaryKeyRelatedField): The user who created the issue.
+        project (PrimaryKeyRelatedField): The project associated with the issue.
+        created_time (DateTimeField): The timestamp when the issue was created.
+
+    Methods:
+        create(self, validated_data): Creates and returns a new Issue instance.
+        update(self, instance, validated_data): Updates and returns an existing Issue instance.
+    """
 
     class Meta:
         model = Issue
         fields = [
             'url',
             'id',
-            'highlight',
             'title',
             'description',
             'tag_choices',
             'priority_choices',
             'status_choices',
+            'author',
+            'assigned_user',
             'created_time',
-            'owner',
+            'modified_datetime',
+        ]
+        read_only_fields = [
+            'author',
+            'project',
+            'created_time',
         ]
 
     def create(self, validated_data):
+        """
+        Creates and returns a new Issue instance.
+
+        Args:
+            validated_data (dict): The validated data for the new Issue.
+
+        Returns:
+            Issue: The created Issue instance.
+        """
         return Issue.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
+        """
+        Updates and returns an existing Issue instance.
+
+        Args:
+            instance (Issue): The existing Issue instance to update.
+            validated_data (dict): The validated data for updating the Issue.
+
+        Returns:
+            Issue: The updated Issue instance.
+        """
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get(
             'description', instance.description
@@ -47,21 +90,13 @@ class IssueSerializer(serializers.ModelSerializer):
         instance.created_time = validated_data.get(
             'created_time', instance.created_time
         )
-        instance.owner = validated_data.get('owner', instance.owner)
+        instance.modified_datetime = validated_data.get(
+            'modified_datetime', instance.modified_datetime
+        )
+        instance.project = validated_data.get('project', instance.project)
+        instance.author = validated_data.get('author', instance.author)
+        instance.created_time = validated_data.get(
+            'created_time', instance.created_time
+        )
         instance.save()
         return instance
-
-    def save(self, *args, **kwargs):
-        instance = super().save(*args, **kwargs)
-        tag_choices = instance.tag_choices
-        priority_choices = 'table' if instance.priority_choices else False
-        options = {'title': instance.title} if instance.title else {}
-        formatter = HtmlFormatter(
-            style=self.style,
-            priority_choices=priority_choices,
-            full=True,
-            **options,
-        )
-        lexer = get_lexer_by_name(tag_choices)
-        self.highlighted = highlight(instance.created, lexer, formatter)
-        super().save(*args, **kwargs)

@@ -8,6 +8,8 @@ django = "*"
 djangorestframework = "*"
 pygments = "*"
 httpie = "*"
+rest-framework-simplejwt = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

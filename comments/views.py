@@ -1,26 +1,43 @@
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import permissions
+from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
-from rest_framework import renderers
 
+from projects.permissions import HasProjectPermission, IsAuthorOrReadOnly
+from issues.models import Issue
 from .models import Comment
 from .serializers import CommentSerializer
-from projects.permissions import IsOwnerOrReadOnly
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing comments.
+
+    Attributes:
+        queryset (QuerySet): The queryset of Comment objects.
+        serializer_class (CommentSerializer): The serializer class for Comment objects.
+        permission_classes (list): The list of permission classes for the viewset.
+
+    Methods:
+        get_queryset(): Get the queryset of comments for a specific issue.
+    """
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
-        IsOwnerOrReadOnly,
+        IsAuthenticated,
+        HasProjectPermission,
+        IsAuthorOrReadOnly,
     ]
 
-    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        snippet = self.get_object()
-        return Response(snippet.highlighted)
+    def get_queryset(self):
+        """
+        Get the queryset of comments for a specific issue.
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        Returns:
+            QuerySet: The queryset of Comment objects.
+        """
+        queryset = Issue.objects.get(
+            Q(project__id=self.kwargs['project_id'])
+            & Q(pk=self.kwargs['issue_id'])
+        )
+        return queryset.comments.all()
