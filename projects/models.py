@@ -1,3 +1,4 @@
+from re import escape
 from django.db import models
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -18,7 +19,7 @@ class Project(models.Model):
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(
+    author = models.ForeignKey(
         'auth.User', related_name='projects', on_delete=models.CASCADE
     )
     contributors = models.ManyToManyField(
@@ -34,6 +35,7 @@ class Project(models.Model):
         formatter = HtmlFormatter(
             style='vs', is_active=active_style, full=True, **options
         )
+        escaped_description = escape(self.description)
         lexer = get_lexer_by_name('python')
-        self.highlighted = highlight(self.description, lexer, formatter)
+        self.highlighted = highlight(escaped_description, lexer, formatter)
         super(Project, self).save(*args, **kwargs)

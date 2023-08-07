@@ -4,7 +4,7 @@ from .models import Project
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.CurrentUserDefault()
+    author = serializers.CurrentUserDefault()
     issues = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='issue-detail'
     )
@@ -17,7 +17,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'url',
             'id',
-            'owner',
+            'author',
             'title',
             'description',
             'type_choices',
@@ -51,6 +51,6 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         )
         instance.created = validated_data.get('created', instance.created)
         instance.modified = validated_data.get('modified', instance.modified)
-        instance.owner = validated_data.get('owner', instance.owner)
+        instance.author = validated_data.get('author', instance.author)
         instance.save()
         return instance

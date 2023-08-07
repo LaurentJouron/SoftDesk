@@ -2,14 +2,14 @@ from rest_framework import permissions
 from projects.models import Project
 
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class IsAuthorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.owner == request.user
+        return obj.author == request.user
 
 
-class IsProjectOwner(permissions.BasePermission):
+class IsProjectAuthor(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if view.action in ['create', 'list']:
             return True
