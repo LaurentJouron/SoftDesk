@@ -16,11 +16,11 @@ from issues.views import IssueViewSet
 from comments.views import CommentViewSet
 
 
-# Gestion des accès aux applications
+# Applications router
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename="users")
-router.register(r'projects', ProjectViewSet, basename="project")
 router.register(r'contributors', ContributorViewSet, basename="contributor")
+router.register(r'projects', ProjectViewSet, basename="project")
 router.register(r'issues', IssueViewSet, basename="issue")
 router.register(r'comments', CommentViewSet, basename="comment")
 
@@ -29,12 +29,12 @@ urlpatterns = [
     path('users/', include('users.urls')),
 ]
 
-# Documentation avec Swagger
+# Documentation with Swagger
 schema_view = get_schema_view(
     openapi.Info(
-        title="Todo API",
+        title="SoftDesk API",
         default_version='v1',
-        description="This API is used to manage todos",
+        description="SoftDesk, a collaboration software publishing company, is launching SoftDesk Support, a B2B application to report and track technical issues.",
         contact=openapi.Contact(email="djangopython@hotmail.com"),
         license=openapi.License(name="BSD License"),
     ),
@@ -60,7 +60,8 @@ urlpatterns += [
     ),
 ]
 
-# Authentification et gestion des Tokens
+
+# Authentification and Token management
 urlpatterns += [
     path(
         'api-auth/', include('rest_framework.urls', namespace='rest_framework')

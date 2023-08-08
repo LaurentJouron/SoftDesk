@@ -8,9 +8,9 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     issues = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='issue-detail'
     )
-    contributors = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name='contributor-detail'
-    )
+    # contributors = serializers.HyperlinkedRelatedField(
+    #     many=True, read_only=True, view_name='contributor-detail'
+    # )
 
     class Meta:
         model = Project
@@ -25,7 +25,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'created',
             'modified',
             'issues',
-            'contributors',
+            # 'contributors',
         ]
 
     def get_contributors(self, obj):
