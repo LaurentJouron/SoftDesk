@@ -11,6 +11,7 @@ djangorestframework-simplejwt = "*"
 django-rest-swagger = "*"
 coreapi = "*"
 drf-yasg = "*"
+pytest = "*"
 
 [dev-packages]
 

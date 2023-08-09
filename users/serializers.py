@@ -1,6 +1,10 @@
+import imp
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+
+from projects.models import Project
+from projects.serializers import ProjectSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +29,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
     def get_projects(self, obj):
-        return [project.name for project in obj.projects.all()]
+        contributors = obj.contributors_set.all()
+        project_ids = [contributor.project.id for contributor in contributors]
+        projects = Project.objects.filter(id__in=project_ids)
+        return ProjectSerializer(projects, many=True).data
 
     def create(self, validated_data):
         user = User.objects.create_user(
