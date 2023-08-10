@@ -19,10 +19,10 @@ from comments.views import CommentViewSet
 # Applications router
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename="users")
-router.register(r'contributors', ContributorViewSet, basename="contributor")
 router.register(r'projects', ProjectViewSet, basename="project")
 router.register(r'issues', IssueViewSet, basename="issue")
 router.register(r'comments', CommentViewSet, basename="comment")
+router.register(r'contributors', ContributorViewSet, basename="contributor")
 
 urlpatterns = [
     path('', include(router.urls)),

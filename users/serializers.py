@@ -2,10 +2,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
+from projects.models import Project
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     projects = serializers.HyperlinkedRelatedField(
-        many=True, view_name='comment-detail', read_only=True
+        many=True, queryset=Project.objects.all(), view_name='comment-detail'
     )
 
     class Meta:

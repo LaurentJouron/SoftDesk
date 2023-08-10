@@ -22,9 +22,9 @@ class Project(models.Model):
     author = models.ForeignKey(
         'auth.User', related_name='projects', on_delete=models.CASCADE
     )
-    # contributors = models.ManyToManyField(
-    #     'auth.User', related_name='projects_contributed'
-    # )
+    contributors = models.ManyToManyField(
+        'auth.User', related_name='projects_contributed'
+    )
 
     def __str__(self):
         return self.title

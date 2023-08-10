@@ -5,7 +5,7 @@ from .models import Issue
 
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.StringRelatedField()
+    author = serializers.ReadOnlyField(source='author.username')
     assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     contributors = ContributorSerializer(many=True, read_only=True)
     comments = serializers.HyperlinkedIdentityField(
@@ -63,6 +63,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         )
         instance.assignee = validated_data.get('assignee', instance.assignee)
         instance.author = validated_data.get('author', instance.author)
-        instance.project = validated_data.get('project', instance.project)
+        project_data = validated_data.get('project')
+        instance.project = project_data
         instance.save()
         return instance

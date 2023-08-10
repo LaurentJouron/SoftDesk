@@ -1,3 +1,4 @@
+from re import escape
 from django.db import models
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -23,9 +24,12 @@ class Comment(models.Model):
         return f'Comment #{self.pk} on Issue #{self.issue.pk}'
 
     def save(self, *args, **kwargs):
-        description = self.description
-        options = {'description': self.description}
-        formatter = HtmlFormatter(style='vs', full=True, **options)
+        active_style = 'table' if self.is_active else False
+        options = {'title': self.title} if self.title else {}
+        formatter = HtmlFormatter(
+            style='vs', is_active=active_style, full=True, **options
+        )
+        escaped_description = escape(self.description)
         lexer = get_lexer_by_name('python')
-        self.highlighted = highlight(description, lexer, formatter)
+        self.highlighted = highlight(escaped_description, lexer, formatter)
         super(Comment, self).save(*args, **kwargs)

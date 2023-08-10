@@ -1,9 +1,13 @@
 from rest_framework import serializers
 
+from users.models import User
 from .models import Comment
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    # author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    author = serializers.ReadOnlyField(source='author.username')
+
     class Meta:
         model = Comment
         fields = [
@@ -20,7 +24,8 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         return self.title
 
     def create(self, validated_data):
-        return Comment.objects.create(**validated_data)
+        comment = Comment.objects.create(**validated_data)
+        return comment
 
     def update(self, instance, validated_data):
         instance.description = validated_data.get(
