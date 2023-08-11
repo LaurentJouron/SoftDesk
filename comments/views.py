@@ -16,10 +16,3 @@ class CommentViewSet(viewsets.ModelViewSet):
     def highlight(self, request, *args, **kwargs):
         comment = self.get_object()
         return Response(comment.highlighted)
-
-    def create(self, validated_data):
-        author_data = validated_data.pop('author')
-        comment = Comment.objects.create(**validated_data)
-        comment.author = author_data
-        comment.save()
-        return comment

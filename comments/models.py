@@ -24,10 +24,9 @@ class Comment(models.Model):
         return f'Comment #{self.pk} on Issue #{self.issue.pk}'
 
     def save(self, *args, **kwargs):
-        active_style = 'table' if self.is_active else False
-        options = {'title': self.title} if self.title else {}
+        options = {'description': self.description} if self.description else {}
         formatter = HtmlFormatter(
-            style='vs', is_active=active_style, full=True, **options
+            style='vs', is_active=False, full=True, **options
         )
         escaped_description = escape(self.description)
         lexer = get_lexer_by_name('python')

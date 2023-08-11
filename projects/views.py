@@ -20,6 +20,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         SessionAuthentication,
         BasicAuthentication,
         TokenAuthentication,
+        # JWTAuthentication,
     ]
     permission_classes = [IsAuthenticated]
 

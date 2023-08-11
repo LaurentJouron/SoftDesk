@@ -28,6 +28,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'contributors',
         ]
 
+    # ...
+
     def get_contributors(self, obj):
         contributors = obj.contributors_set.all()
         return ContributorSerializer(contributors, many=True).data

@@ -4,26 +4,26 @@ from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
-TAG_CHOICES = [
-    ('Bug', 'Bug'),
-    ('Feature', 'Feature'),
-    ('Task', 'Task'),
-]
-
-PRIORITY_CHOICES = [
-    ('Low', 'Low'),
-    ('Medium', 'Medium'),
-    ('High', 'High'),
-]
-
-STATUS_CHOICES = [
-    ('To do', 'To do'),
-    ('In progress', 'In progress'),
-    ('Finished', 'Finished'),
-]
-
 
 class Issue(models.Model):
+    TAG_CHOICES = [
+        ('Bug', 'Bug'),
+        ('Feature', 'Feature'),
+        ('Task', 'Task'),
+    ]
+
+    PRIORITY_CHOICES = [
+        ('Low', 'Low'),
+        ('Medium', 'Medium'),
+        ('High', 'High'),
+    ]
+
+    STATUS_CHOICES = [
+        ('To do', 'To do'),
+        ('In progress', 'In progress'),
+        ('Finished', 'Finished'),
+    ]
+
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=2048)
     tag_choices = models.CharField(choices=TAG_CHOICES, max_length=20)

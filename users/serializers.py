@@ -1,12 +1,16 @@
-import imp
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+from projects.models import Project
+from projects.serializers import ProjectSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     projects = serializers.HyperlinkedRelatedField(
-        many=True, queryset=Project.objects.all(), view_name='comment-detail'
+        many=True,
+        read_only=True,
+        view_name='project-detail',
+        source='projects_contributed',
     )
 
     class Meta:

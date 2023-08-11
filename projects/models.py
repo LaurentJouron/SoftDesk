@@ -4,15 +4,14 @@ from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
-TYPE_CHOICES = [
-    ('BACK-END', 'Back-end'),
-    ('FRONT-END', 'Front-end'),
-    ('IOS', 'iOS'),
-    ('ANDROID', 'Android'),
-]
-
 
 class Project(models.Model):
+    TYPE_CHOICES = [
+        ('BACK-END', 'Back-end'),
+        ('FRONT-END', 'Front-end'),
+        ('IOS', 'iOS'),
+        ('ANDROID', 'Android'),
+    ]
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
     type_choices = models.CharField(choices=TYPE_CHOICES, max_length=40)

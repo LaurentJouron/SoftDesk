@@ -9,7 +9,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
     assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     contributors = ContributorSerializer(many=True, read_only=True)
     comments = serializers.HyperlinkedIdentityField(
-        many=True, read_only=True, view_name='comments-detail'
+        many=True, read_only=True, view_name='comment-detail'
     )
 
     class Meta:
@@ -36,10 +36,11 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         return self.title
 
     def create(self, validated_data):
-        assignee_data = validated_data.pop('assignee')
+        assignee_data = validated_data.pop('assignee', None)
         issue = Issue.objects.create(**validated_data)
-        issue.assignee = assignee_data
-        issue.save()
+        if assignee_data:
+            issue.assignee = assignee_data
+            issue.save()
         return issue
 
     def update(self, instance, validated_data):
@@ -63,7 +64,6 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         )
         instance.assignee = validated_data.get('assignee', instance.assignee)
         instance.author = validated_data.get('author', instance.author)
-        project_data = validated_data.get('project')
-        instance.project = project_data
+        instance.project = validated_data.get('project')
         instance.save()
         return instance
