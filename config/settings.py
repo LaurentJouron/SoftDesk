@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'rest_framework_simplejwt',
-    'rest_framework.authtoken',
     'drf_yasg',
     'rest_framework',
     'projects',
@@ -130,7 +129,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -139,14 +137,14 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=300),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": False,
+    "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": False,
+    "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": "",
+    "VERIFYING_KEY": None,
     "AUDIENCE": None,
     "ISSUER": None,
     "JSON_ENCODER": None,
@@ -183,4 +181,8 @@ REDOC_SETTINGS = {
     'HIDE_HOSTNAME': False,
     'EXPAND_RESPONSES': 'all',
     'PATH_IN_MIDDLE': False,
+}
+
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'projects.urls.swagger_info',
 }

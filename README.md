@@ -24,59 +24,100 @@ ___________
 
 <h1 align="center">But de l'application</h1>
 
+<h3> Développement d'une Application de Suivi de Problèmes avec SoftDesk.</h3>
 
+La société SoftDesk, spécialisée dans l'édition de logiciels de développement et de collaboration, a entrepris la création d'une application de suivi de problèmes destinée aux entreprises clientes (B2B). Cette application, disponible sur le web, Android et iOS, permet aux utilisateurs de gérer des projets, résoudre des problèmes techniques et suivre leur progression. Vous avez été embauché en tant qu'ingénieur logiciel backend pour créer un backend performant et sécurisé pour cette application.
+
+Principaux Points du Projet :
+
+1. Plateformes : L'application de suivi de problèmes doit être disponible sur le web, Android et iOS.
+
+2. Fonctionnalités Principales :
+   - Gestion de projets : Les utilisateurs peuvent créer, éditer, supprimer et afficher des projets. Chaque projet possède un titre, une description, un type (back-end, front-end, iOS ou Android) et un auteur.
+   - Attribution des Problèmes : Les utilisateurs associés à un projet peuvent créer, attribuer, afficher et gérer les problèmes liés à ce projet.
+   - Authentification : Utilisation de JWT pour l'authentification des utilisateurs.
+   - Priorités et Balises : Les problèmes sont attribués des priorités (FAIBLE, MOYENNE, ÉLEVÉE) et des balises (BUG, AMÉLIORATION, TÂCHE).
+   - Statuts : Les problèmes peuvent être en cours, à faire ou terminés.
+   - Commentaires : Les contributeurs peuvent ajouter des commentaires aux problèmes.
+
+3. Sécurité : Les utilisateurs sont autorisés à effectuer des actions basées sur leur rôle et leur affiliation à un projet. Seuls les contributeurs peuvent créer, lire, mettre à jour et supprimer des éléments liés à un problème.
+
+4. Architecture : Les trois applications (web, Android, iOS) utilisent des points de terminaison d'API pour interagir avec le backend.
+
+5. Tâche Initiale : Vous devez développer une API REST en utilisant Django REST Framework. Les documents fournis comprennent un diagramme de classe, une liste de points de terminaison d'API et un exemple de réponse. De plus, vous devez implémenter des mesures de sécurité OWASP.
+
+6. Livrables :
+   - Repository GitHub contenant le code de l'API REST développée avec Django REST, accompagné d'un fichier README détaillant la configuration du projet.
+   - Documentation de l'API, avec des informations détaillées sur chaque point de terminaison.
+
+Votre responsabilité en tant qu'ingénieur logiciel backend chez SoftDesk est de mettre en œuvre cette application de suivi de problèmes en développant un backend solide et sécurisé, en accordant une attention particulière aux fonctionnalités, à l'authentification des utilisateurs et à la gestion des autorisations. Vous devez également collaborer avec les autres équipes en fournissant une documentation complète pour faciliter le développement des applications côté client.
 
 ___________
 
-<h1 align="center">Langage</h1>
+<h1 align="center">Langages et outils</h1>
 
 
-<p align="center">Les applications ont étés développées en Python - Django - Djando REST framework</p>
 
 <table>
   <tr>
     <td align="center">
       <a href="https://www.python.org/">
-        <img width="230px"
-          src="https://www.python.org/static/img/python-logo.png" /><br />
-        <sub><b>Téléchargez Python</b></sub></a><br />
+        <img width="130px"
+          src="https://img.shields.io/badge/Python-yellow" /><br />
+        <sub><b>Doc Python</b></sub></a><br />
       <a href="https://www.python.org/" title="Téléchargez Python" ></a> 
     </td>
     <td align="center">
       <a href="https://www.djangoproject.com/">
-        <img width="200px"
-          src="https://static.djangoproject.com/img/logos/django-logo-negative.png" /><br />
+        <img width="130px"
+          src="https://img.shields.io/badge/Django-vert" /><br />
         <sub><b>Doc Django</b></sub></a><br />
       <a href="https://www.djangoproject.com/" title="Doc Django"></a> 
     </td>
     <td align="center">
       <a href="https://www.django-rest-framework.org/">
-        <img width="140px"
-          src="https://storage.caktusgroup.com/media/blog-images/drf-logo2.png" /><br />
+        <img width="350px"
+          src="https://img.shields.io/badge/DjangoRESTframework-red"/><br />
         <sub><b>Doc Django REST framework</b></sub></a><br />
       <a href="https://www.django-rest-framework.org/" title="Doc Django REST framework"></a> 
     </td>
   </tr>
 </table>
 
-___________
-
-<h1 align="center">EDI</h1>
-
-
-<p align="left">L'EDI utilisé pour la programmation est Visual Studio Code.
-
 <table>
   <tr>
     <td align="center">
       <a href="https://visualstudio.microsoft.com/fr/">
-        <img width="130px"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-H3CcAG7w2nXSnlqldVWR-ER4mvFfLgqYxA&usqp=CAU" /><br />
+        <img width="120px"
+          src="https://img.shields.io/badge/VSCode-blue"/><br />
         <sub><b>Visuable Studio Code</b></sub></a><br />
       <a href="https://visualstudio.microsoft.com/fr/" title="Visuable Studio Code"></a>
     </td>
+    <td align="center">
+      <a href="https://www.postman.com/api-documentation-tool/">
+        <img width="130px" src="https://img.shields.io/badge/Postman-orange"/><br />
+        <sub><b>Postman</b></sub></a><br />
+      <a href="https://www.postman.com/api-documentation-tool/" title="Postman"></a>
+    </td>
+    <td align="center">
+      <a href="https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#">
+        <img width="160px"
+          src="https://img.shields.io/badge/SimpleJWT-blue"/><br />
+        <sub><b>Simple JWT</b></sub></a><br />
+      <a href="https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#" title="Simple JWT"></a>
+    </td>
+    <td align="center">
+      <a href="https://pipenv.pypa.io/en/latest/">
+        <img width="110px"
+          src="https://img.shields.io/badge/Pipenv-grey
+" /><br />
+        <sub><b>Doc pipenv</b></sub></a><br />
+      <a href="https://pipenv.pypa.io/en/latest/" title="Pipenv"></a>
+    </td>
   </tr>
 </table>
+
+
 
 ___________
 
@@ -115,51 +156,49 @@ ___________
 <h1 align="center">Effectuer une requête POST avec le jeton CSRF (Postman)</h1>
 <h3>Obtenez le jeton CSRF</h3>
 
-* Ouvrez votre navigateur (par exemple, Google Chrome) et accédez à l'URL de votre application Django Rest Framework.
-
-* Ouvrez les outils de développement du navigateur en appuyant sur F12 ou en faisant un clic droit sur la page, puis en sélectionnant "Inspecter".
-
-* Accédez à l'onglet "Network" dans les outils de développement.
-
-* Rechargez la page de votre application.
-
-* Dans la liste des requêtes qui apparaît dans l'onglet "Network", trouvez la requête qui correspond à la page que vous avez rechargée. Cliquez sur cette requête pour afficher les détails.
-
-* Dans les en-têtes de la requête, recherchez "Set-Cookie" et trouvez la valeur associée à "csrftoken". Cette valeur est votre jeton CSRF.
-
-<h3>Créez une nouvelle requête dans Postman</h3>
-
 * Ouvrez l'application Postman sur votre ordinateur.
 
 * Cliquez sur le bouton "New" pour créer une nouvelle requête.
 
 * Dans le champ "Request Name", donnez un nom significatif à votre requête.
 
-* Dans le champ "Request URL", saisissez l'URL de votre API Django Rest Framework où vous souhaitez effectuer la requête POST.
+* Dans le champ "Request URL", saisissez l'URL : http://127.0.0.1:8000/api/token/
 
 * Dans le champ "Request Method", sélectionnez "POST" dans le menu déroulant.
 
-<h3>Ajoutez l'en-tête CSRF à la requête</h3>
+* Dans l'onglet Body, séléctonnez raw, coller et cliquez sur send
 
-* Cliquez sur l'onglet "Headers" sous l'URL de la requête.
+```json
+{
+  "username": "Laurent",
+  "password": "test"
+}
+```
+
+* Cliquez sur l'onglet "Headers" sous l'URL de la requête. Vous obtiendrez votre Token. 
+
+Exemple:
+```json
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MTgzOTU3MiwiaWF0IjoxNjkxNzUzMTcyLCJqdGkiOiJlZTc2ODQ4YmYzNGQ0ODI1OTQ5YTcyYTE2NGI3YTJlNSIsInVzZXJfaWQiOjF9.M9eSGmRkcf1wMS2iDVe2l0PH8Zm9HDMi7eDUDF6QN_Q",
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxNzcxMTcyLCJpYXQiOjE2OTE3NTMxNzIsImp0aSI6IjhlNDA3MWEzYjhiNDRiMmNhOWRiM2IwZTU2MWU5OTMyIiwidXNlcl9pZCI6MX0.iT_s2w4pAhrP0kQLz3L5UV2BTLt0ycl7igIY6ZY5gX8"
+}
+```
+* Copiez la clé access sans les doubles cotes ""
+
+<h3>Nouelle requelle</h3>
 
 * Cliquez sur le bouton "+", à droite de "Key", pour ajouter un nouvel en-tête.
 
-* Dans le champ "Key", saisissez "X-CSRFToken".
+* Dans Authorization - cliquez sur la combo type et selectionnez Bearer Token
 
-* Dans le champ "Value", collez la valeur du jeton CSRF que vous avez obtenu à l'étape 1.
+* Collez le Token à la place indiquée.
 
-<h3>Configurez le corps de la requête</h3>
+* Dans le champ "Request Method", sélectionnez "GET" dans le menu déroulant.
 
 * Cliquez sur l'onglet "Body" sous l'URL de la requête.
 
-* Choisissez la méthode d'envoi des données appropriée pour votre API (par exemple, "raw" pour envoyer des données JSON).
-
-* Dans le corps de la requête, entrez les données requises selon les spécifications de votre API. Assurez-vous de respecter le format attendu par l'API (par exemple, JSON ou x-www-form-urlencoded).
-
-<h3>Envoyez la requête</h3>
-
-* Cliquez sur le bouton "Send" pour envoyer la requête POST à votre API Django Rest Framework avec le jeton CSRF inclus dans l'en-tête "X-CSRFToken".
+* Cliquez sur le bouton "Send" pour envoyer la requête GET à votre API Django Rest Framework avec le jeton CSRF inclus dans l'en-tête "X-CSRFToken".
 
 * Vous devriez recevoir une réponse de l'API, indiquant que la requête a été traitée avec succès ou affichant toute erreur éventuelle.
 ___________

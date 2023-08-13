@@ -1,9 +1,11 @@
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions
 from rest_framework import viewsets
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, MyTokenObtainPairSerializer
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -42,3 +44,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         This endpoint returns detailed information about a specific user identified by its ID.
         """
         return super().retrieve(request, *args, **kwargs)
+
+
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer

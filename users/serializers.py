@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from projects.models import Project
 from projects.serializers import ProjectSerializer
 
@@ -54,3 +55,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                 validated_data['password']
             )
         return super().update(instance, validated_data)
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+        token['username'] = user.username
+        return token

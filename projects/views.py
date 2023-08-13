@@ -1,8 +1,8 @@
 from rest_framework.authentication import (
     SessionAuthentication,
     BasicAuthentication,
-    TokenAuthentication,
 )
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -19,8 +19,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     authentication_classes = [
         SessionAuthentication,
         BasicAuthentication,
-        TokenAuthentication,
-        # JWTAuthentication,
+        JWTAuthentication,
     ]
     permission_classes = [IsAuthenticated]
 
