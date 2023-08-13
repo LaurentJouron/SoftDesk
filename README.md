@@ -102,15 +102,14 @@ ___________
     <td align="center">
       <a href="https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#">
         <img width="160px"
-          src="https://img.shields.io/badge/SimpleJWT-blue"/><br />
+          src="https://img.shields.io/badge/SimpleJWT-blue"/><br/>
         <sub><b>Simple JWT</b></sub></a><br />
       <a href="https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#" title="Simple JWT"></a>
     </td>
     <td align="center">
       <a href="https://pipenv.pypa.io/en/latest/">
         <img width="110px"
-          src="https://img.shields.io/badge/Pipenv-grey
-" /><br />
+          src="https://img.shields.io/badge/Pipenv-grey"/><br/>
         <sub><b>Doc pipenv</b></sub></a><br />
       <a href="https://pipenv.pypa.io/en/latest/" title="Pipenv"></a>
     </td>
