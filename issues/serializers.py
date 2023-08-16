@@ -1,39 +1,9 @@
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from contributors.serializers import ContributorSerializer
-from .models import Issue
+from .relations import Issue, IssueSerializer
 
 
-class IssueSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    contributors = ContributorSerializer(many=True, read_only=True)
-    comments = serializers.HyperlinkedIdentityField(
-        many=True, read_only=True, view_name='comment-detail'
-    )
-
-    class Meta:
+class IssueSerializer(IssueSerializer):
+    class Meta(IssueSerializer.Meta):
         model = Issue
-        fields = [
-            'id',
-            'url',
-            'title',
-            'description',
-            'tag_choices',
-            'priority_choices',
-            'status_choices',
-            'created',
-            'modified',
-            'is_active',
-            'author',
-            'assignee',
-            'project',
-            'contributors',
-            'comments',
-        ]
-
-    def __str__(self):
-        return self.title
 
     def create(self, validated_data):
         assignee_data = validated_data.pop('assignee', None)

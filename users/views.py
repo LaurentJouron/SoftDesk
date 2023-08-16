@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     - 403 Forbidden: You do not have permission to access this resource.
 
     Security:
-    - List Users: No authentication required.
+    - List Users: Requires authentication.
     - Retrieve User: Requires authentication.
     """
 
