@@ -127,7 +127,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 4,
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -171,18 +170,23 @@ SIMPLE_JWT = {
 }
 
 SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {'type': 'basic'},
+        'Bearer': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'},
+    },
     'USE_SESSION_AUTH': True,
     'LOGIN_URL': '/admin/login/',
     'LOGOUT_URL': '/admin/logout',
 }
 
 REDOC_SETTINGS = {
-    'LAZY_RENDERING': True,
+    'LAZY_RENDERING': False,
     'HIDE_HOSTNAME': False,
     'EXPAND_RESPONSES': 'all',
     'PATH_IN_MIDDLE': False,
 }
 
 SWAGGER_SETTINGS = {
-    'DEFAULT_INFO': 'projects.urls.swagger_info',
+    'VALIDATOR_URL': 'http://localhost:8000',
+    'DEFAULT_INFO': 'import.path.to.urls.api_info',
 }

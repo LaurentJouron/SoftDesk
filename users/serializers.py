@@ -7,6 +7,9 @@ from projects.serializers import ProjectSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    # Serializer for the User model
+
+    # HyperlinkedRelatedField for projects_contributed relationship
     projects = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -31,12 +34,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
     def get_projects(self, obj):
+        # Retrieve projects associated with the user through contributors
         contributors = obj.contributors_set.all()
         project_ids = [contributor.project.id for contributor in contributors]
         projects = Project.objects.filter(id__in=project_ids)
         return ProjectSerializer(projects, many=True).data
 
     def create(self, validated_data):
+        # Create a new user
         user = User.objects.create_user(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
@@ -50,6 +55,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
     def update(self, instance, validated_data):
+        # Update user details
         if 'password' in validated_data:
             validated_data['password'] = make_password(
                 validated_data['password']
@@ -58,6 +64,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # Custom TokenObtainPairSerializer to include 'username' in token payload
+
     @classmethod
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)

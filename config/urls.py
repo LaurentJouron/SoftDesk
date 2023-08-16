@@ -37,6 +37,7 @@ schema_view = get_schema_view(
         title="SoftDesk API",
         default_version='v1',
         description="SoftDesk, a collaboration software publishing company, is launching SoftDesk Support, a B2B application to report and track technical issues.",
+        terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="djangopython@hotmail.com"),
         license=openapi.License(name="BSD License"),
     ),

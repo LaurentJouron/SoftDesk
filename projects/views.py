@@ -1,8 +1,3 @@
-from rest_framework.authentication import (
-    SessionAuthentication,
-    BasicAuthentication,
-)
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -16,11 +11,6 @@ from .serializers import ProjectSerializer
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    authentication_classes = [
-        SessionAuthentication,
-        BasicAuthentication,
-        JWTAuthentication,
-    ]
     permission_classes = [IsAuthenticated]
 
     @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])

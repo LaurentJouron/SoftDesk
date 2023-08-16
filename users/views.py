@@ -1,17 +1,31 @@
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions
 from rest_framework import viewsets
 
-from .serializers import UserSerializer, MyTokenObtainPairSerializer
+from .serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows users to be viewed (Read-only).
+
     This viewset provides endpoints to list and retrieve users.
+
+    List Users:
+    - Retrieve a paginated list of all users in the system.
+
+    Retrieve User:
+    - Retrieve detailed information about a specific user identified by its ID.
+
+    Response Status Codes:
+    - 200 OK: Request successful.
+    - 401 Unauthorized: Authentication credentials were not provided.
+    - 403 Forbidden: You do not have permission to access this resource.
+
+    Security:
+    - List Users: No authentication required.
+    - Retrieve User: Requires authentication.
     """
 
     queryset = User.objects.all()
@@ -44,8 +58,3 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         This endpoint returns detailed information about a specific user identified by its ID.
         """
         return super().retrieve(request, *args, **kwargs)
-
-
-class MyObtainTokenPairView(TokenObtainPairView):
-    permission_classes = (AllowAny,)
-    serializer_class = MyTokenObtainPairSerializer
