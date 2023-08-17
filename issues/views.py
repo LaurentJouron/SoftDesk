@@ -1,9 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import renderers
 from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 from users.models import User
 from .models import Issue
@@ -14,11 +11,6 @@ class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     permission_classes = [IsAuthenticated]
-
-    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        issue = self.get_object()
-        return Response(issue.highlighted)
 
     def perform_create(self, serializer):
         author = self.request.user

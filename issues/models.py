@@ -1,8 +1,5 @@
-from re import escape
 from django.db import models
-from pygments import highlight
-from pygments.formatters.html import HtmlFormatter
-from pygments.lexers import get_lexer_by_name
+from django.conf import settings
 
 
 class Issue(models.Model):
@@ -35,10 +32,10 @@ class Issue(models.Model):
     modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     author = models.ForeignKey(
-        'auth.User', on_delete=models.CASCADE, related_name='issues_created'
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='issues_created'
     )
     assignee = models.ForeignKey(
-        'auth.User',
+        'users.User',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -50,14 +47,3 @@ class Issue(models.Model):
 
     def __str__(self):
         return f'{self.title}'
-
-    def save(self, *args, **kwargs):
-        active_style = 'table' if self.is_active else False
-        options = {'title': self.title} if self.title else {}
-        formatter = HtmlFormatter(
-            style='vs', is_active=active_style, full=True, **options
-        )
-        escaped_description = escape(self.description)
-        lexer = get_lexer_by_name('python')
-        self.highlighted = highlight(escaped_description, lexer, formatter)
-        super(Issue, self).save(*args, **kwargs)

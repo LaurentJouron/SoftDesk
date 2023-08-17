@@ -1,18 +1,27 @@
 from django.db import models
-from django.contrib.auth.models import User
-
-PERMISSION_CHOICES = [
-    ('AUTHOR', 'Author'),
-    ('CONTRIBUTORS', 'Contributor'),
-]
+from django.utils.translation import gettext_lazy as _
 
 
 class Contributor(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="contributor"
+    PERMISSION_CHOICES = [
+        ('AUTHOR', 'Author'),
+        ('CONTRIBUTORS', 'Contributor'),
+    ]
+    permission = models.CharField(
+        choices=PERMISSION_CHOICES,
+        max_length=20,
     )
-    project = models.ForeignKey('projects.Project', on_delete=models.CASCADE)
-    permission = models.CharField(choices=PERMISSION_CHOICES, max_length=20)
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        verbose_name="related_users",
+        related_name='contributors',
+    )
+    project = models.ForeignKey(
+        "projects.Project",
+        on_delete=models.CASCADE,
+        verbose_name="related_projects",
+    )
     role = models.CharField(max_length=100)
 
     def __str__(self):

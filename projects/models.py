@@ -1,8 +1,6 @@
-from re import escape
 from django.db import models
-from pygments import highlight
-from pygments.formatters.html import HtmlFormatter
-from pygments.lexers import get_lexer_by_name
+from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 
 class Project(models.Model):
@@ -19,22 +17,14 @@ class Project(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(
-        'auth.User', related_name='projects', on_delete=models.CASCADE
-    )
-    contributors = models.ManyToManyField(
-        'auth.User', related_name='projects_contributed'
+        settings.AUTH_USER_MODEL,
+        verbose_name="related user (author)",
+        related_name='projects',
+        on_delete=models.CASCADE,
+        help_text=_(
+            "Each project has an author. This author is a user who can have multiple projects"
+        ),
     )
 
     def __str__(self):
         return self.title
-
-    def save(self, *args, **kwargs):
-        active_style = 'table' if self.is_active else False
-        options = {'title': self.title} if self.title else {}
-        formatter = HtmlFormatter(
-            style='vs', is_active=active_style, full=True, **options
-        )
-        escaped_description = escape(self.description)
-        lexer = get_lexer_by_name('python')
-        self.highlighted = highlight(escaped_description, lexer, formatter)
-        super(Project, self).save(*args, **kwargs)

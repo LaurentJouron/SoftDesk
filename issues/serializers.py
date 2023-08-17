@@ -1,9 +1,40 @@
-from .relations import Issue, IssueSerializer
+from rest_framework import serializers
+from contributors.serializers import ContributorSerializer
+
+from users.models import User
+from .models import Issue
 
 
-class IssueSerializer(IssueSerializer):
-    class Meta(IssueSerializer.Meta):
+class IssueSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    contributors = ContributorSerializer(many=True, read_only=True)
+    comments = serializers.HyperlinkedIdentityField(
+        many=True, read_only=True, view_name='comment-detail'
+    )
+
+    class Meta:
         model = Issue
+        fields = [
+            'id',
+            'url',
+            'title',
+            'description',
+            'tag_choices',
+            'priority_choices',
+            'status_choices',
+            'created',
+            'modified',
+            'is_active',
+            'author',
+            'assignee',
+            'project',
+            'contributors',
+            'comments',
+        ]
+
+    def __str__(self):
+        return self.title
 
     def create(self, validated_data):
         assignee_data = validated_data.pop('assignee', None)

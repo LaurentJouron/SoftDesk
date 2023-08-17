@@ -1,12 +1,13 @@
 from rest_framework import serializers
-from .relations import (
-    Comment,
-    CommentRelatedSerializer,
-)
+
+from .models import Comment
 
 
-class CommentRelatedSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
+    issue = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name='issue-detail'
+    )
 
     class Meta:
         model = Comment
@@ -20,10 +21,8 @@ class CommentRelatedSerializer(serializers.ModelSerializer):
             'modified',
         ]
 
-
-class CommentIssueSerializer(CommentRelatedSerializer):
-    class Meta(CommentRelatedSerializer.Meta):
-        pass
+    def __str__(self):
+        return self.title
 
     def create(self, validated_data):
         user = self.context['request'].user
