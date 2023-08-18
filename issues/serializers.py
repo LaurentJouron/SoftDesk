@@ -2,6 +2,7 @@ from rest_framework import serializers
 from contributors.serializers import ContributorSerializer
 
 from users.models import User
+from comments.serializers import CommentSerializer
 from .models import Issue
 
 
@@ -9,9 +10,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     contributors = ContributorSerializer(many=True, read_only=True)
-    comments = serializers.HyperlinkedIdentityField(
-        many=True, read_only=True, view_name='comment-detail'
-    )
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Issue

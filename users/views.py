@@ -1,9 +1,10 @@
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions
 from rest_framework import viewsets
 
 from .models import User
 from .serializers import UserSerializer
+from .models import ProjectContributor
+from .serializers import ContributorSerializer
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -35,26 +36,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         permissions.IsAuthenticated,
     ]
 
-    @swagger_auto_schema(
-        operation_description="Retrieve a list of all users.",
-        responses={200: UserSerializer(many=True)},
-        security=[],
-    )
-    def list(self, request, *args, **kwargs):
-        """
-        Retrieve a list of all users.
-        This endpoint returns a paginated list of all users in the system.
-        """
-        return super().list(request, *args, **kwargs)
 
-    @swagger_auto_schema(
-        operation_description="Retrieve a specific user by ID.",
-        responses={200: UserSerializer()},
-        security=[],
-    )
-    def retrieve(self, request, *args, **kwargs):
-        """
-        Retrieve a specific user by ID.
-        This endpoint returns detailed information about a specific user identified by its ID.
-        """
-        return super().retrieve(request, *args, **kwargs)
+class ContributorViewSet(viewsets.ModelViewSet):
+    queryset = ProjectContributor.objects.all()
+    serializer_class = ContributorSerializer

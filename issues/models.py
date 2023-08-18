@@ -32,7 +32,9 @@ class Issue(models.Model):
     modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='issues_created'
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='issues_created',
     )
     assignee = models.ForeignKey(
         'users.User',
@@ -43,6 +45,9 @@ class Issue(models.Model):
     )
     project = models.ForeignKey(
         'projects.Project', related_name='issues', on_delete=models.CASCADE
+    )
+    issue_comments = models.ManyToManyField(
+        'comments.Comment', related_name='related_issue_comments', blank=True
     )
 
     def __str__(self):

@@ -4,8 +4,10 @@ from django.conf import settings
 
 class Comment(models.Model):
     description = models.TextField(max_length=2048)
-    issue = models.ForeignKey(
-        'issues.Issue', related_name='comments', on_delete=models.CASCADE
+    related_issue = models.ForeignKey(
+        'issues.Issue',
+        related_name='related_comments',
+        on_delete=models.CASCADE,
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,

@@ -1,9 +1,9 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from users.models import User
 from projects.models import Project
 from projects.serializers import ProjectSerializer
+from .models import User, ProjectContributor
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,6 +12,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         view_name='project-detail',
         source='projects_contributed',
+    )
+    project_contributors = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='project-detail',
+        source='project_contributors',
     )
 
     class Meta:
@@ -28,6 +34,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'is_staff',
             'is_active',
             'projects',
+            'contributor',
+            'project_contributors',
         ]
 
     def get_projects(self, obj):
@@ -55,3 +63,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                 validated_data['password']
             )
         return super().update(instance, validated_data)
+
+
+class ContributorSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        queryset=User.objects.all(), slug_field='username'
+    )
+    project = serializers.SlugRelatedField(read_only=True, slug_field='id')
+
+    class Meta:
+        model = ProjectContributor
+        fields = ['id', 'permission', 'user', 'project']

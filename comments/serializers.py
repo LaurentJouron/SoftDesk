@@ -5,8 +5,8 @@ from .models import Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    issue = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name='issue-detail'
+    related_issue = serializers.PrimaryKeyRelatedField(
+        many=False, read_only=True
     )
 
     class Meta:
@@ -15,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'description',
-            'issue',
+            'related_issue',
             'author',
             'created',
             'modified',
@@ -34,7 +34,6 @@ class CommentSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get(
             'description', instance.description
         )
-        instance.issue = validated_data.get('issue', instance.issue)
         instance.author = validated_data.pop('author')
         instance.created = validated_data.get('created', instance.created)
         instance.modified = validated_data.get('modified', instance.modified)

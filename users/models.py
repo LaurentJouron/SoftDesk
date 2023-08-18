@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 
+from projects.models import Project
+
 
 class User(AbstractUser):
     """
@@ -34,8 +36,34 @@ class User(AbstractUser):
         default=False, help_text="Whether the user has superuser privileges"
     )
 
+    project_contributors = models.ManyToManyField(
+        Project,
+        through='contributors.ProjectContributor',
+        related_name='contributed_users',
+    )
+
     def __str__(self):
         """
         Returns the username as the string representation of the user.
         """
         return self.username
+
+
+class ProjectContributor(models.Model):
+    PERMISSION_CHOICES = [
+        ('AUTHOR', 'Author'),
+        ('CONTRIBUTORS', 'Contributor'),
+    ]
+    permission = models.CharField(
+        choices=PERMISSION_CHOICES,
+        max_length=20,
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    joined_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'project')
+
+    def __str__(self):
+        return f'{self.user.username} - {self.project.title}'

@@ -8,11 +8,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 
 from users.views import UserViewSet
-from contributors.views import ContributorViewSet
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
@@ -24,45 +21,11 @@ router.register(r'users', UserViewSet, basename="users")
 router.register(r'projects', ProjectViewSet, basename="project")
 router.register(r'issues', IssueViewSet, basename="issue")
 router.register(r'comments', CommentViewSet, basename="comment")
-router.register(r'contributors', ContributorViewSet, basename="contributor")
 
 urlpatterns = [
     path('', include(router.urls)),
     path('users/', include('users.urls')),
 ]
-
-# Documentation with Swagger
-schema_view = get_schema_view(
-    openapi.Info(
-        title="SoftDesk API",
-        default_version='v1',
-        description="SoftDesk, a collaboration software publishing company, is launching SoftDesk Support, a B2B application to report and track technical issues.",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="djangopython@hotmail.com"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
-
-urlpatterns += [
-    path(
-        'swagger<format>/',
-        schema_view.without_ui(cache_timeout=0),
-        name='schema-json',
-    ),
-    path(
-        'swagger/',
-        schema_view.with_ui('swagger', cache_timeout=0),
-        name='schema-swagger-ui',
-    ),
-    path(
-        'redoc/',
-        schema_view.with_ui('redoc', cache_timeout=0),
-        name='schema-redoc',
-    ),
-]
-
 
 # Authentification and Token management
 urlpatterns += [
