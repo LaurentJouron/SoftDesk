@@ -13,11 +13,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         view_name='project-detail',
         source='projects_contributed',
     )
-    project_contributors = serializers.HyperlinkedRelatedField(
+    contributors = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
         view_name='project-detail',
-        source='project_contributors',
     )
 
     class Meta:
@@ -34,8 +33,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'is_staff',
             'is_active',
             'projects',
-            'contributor',
-            'project_contributors',
+            'contributors',
         ]
 
     def get_projects(self, obj):

@@ -46,9 +46,6 @@ class Issue(models.Model):
     project = models.ForeignKey(
         'projects.Project', related_name='issues', on_delete=models.CASCADE
     )
-    issue_comments = models.ManyToManyField(
-        'comments.Comment', related_name='related_issue_comments', blank=True
-    )
 
     def __str__(self):
         return f'{self.title}'

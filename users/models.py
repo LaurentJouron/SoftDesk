@@ -38,14 +38,11 @@ class User(AbstractUser):
 
     project_contributors = models.ManyToManyField(
         Project,
-        through='contributors.ProjectContributor',
+        through='users.ProjectContributor',
         related_name='contributed_users',
     )
 
     def __str__(self):
-        """
-        Returns the username as the string representation of the user.
-        """
         return self.username
 
 

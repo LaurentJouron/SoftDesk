@@ -1,10 +1,8 @@
 from rest_framework import permissions
 from rest_framework import viewsets
 
-from .models import User
-from .serializers import UserSerializer
-from .models import ProjectContributor
-from .serializers import ContributorSerializer
+from .models import User, ProjectContributor
+from .serializers import UserSerializer, ContributorSerializer
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

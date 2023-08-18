@@ -169,25 +169,3 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
-
-SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Basic': {'type': 'basic'},
-        'Bearer': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'},
-    },
-    'USE_SESSION_AUTH': True,
-    'LOGIN_URL': '/admin/login/',
-    'LOGOUT_URL': '/admin/logout',
-}
-
-REDOC_SETTINGS = {
-    'LAZY_RENDERING': False,
-    'HIDE_HOSTNAME': False,
-    'EXPAND_RESPONSES': 'all',
-    'PATH_IN_MIDDLE': False,
-}
-
-SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': 'http://localhost:8000',
-    'DEFAULT_INFO': 'import.path.to.urls.api_info',
-}
