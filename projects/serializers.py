@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-# from users.serializers import ContributorSerializer
 from .models import Project
 
 
@@ -28,10 +27,6 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'issues',
             'contributors',
         ]
-
-    # def get_contributors(self, obj):
-    #     contributors = obj.contributors_set.all()
-    #     return ContributorSerializer(contributors, many=True).data
 
     def __str__(self):
         return self.title
