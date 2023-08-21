@@ -4,15 +4,6 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    """
-    Represents a user in the system.
-
-    Fields:
-    - email: The email address of the user (unique)
-    Methods:
-    - __str__: Returns the username as the string representation of the user.
-    """
-
     email = models.EmailField(
         unique=True, help_text="The email address of the user"
     )
