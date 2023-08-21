@@ -7,7 +7,9 @@ from .models import Issue
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    assignee = serializers.SlugRelatedField(
+        many=False, read_only=True, slug_field='username'
+    )
     contributors = ContributorSerializer(many=True, read_only=True)
     comments = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='comment-detail'
@@ -37,12 +39,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         return self.title
 
     def create(self, validated_data):
-        assignee_data = validated_data.pop('assignee', None)
-        issue = Issue.objects.create(**validated_data)
-        if assignee_data:
-            issue.assignee = assignee_data
-            issue.save()
-        return issue
+        return Issue.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)

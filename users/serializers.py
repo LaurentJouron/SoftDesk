@@ -29,9 +29,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'last_name',
             'email',
             'password',
-            'is_superuser',
-            'is_staff',
-            'is_active',
             'projects',
             'contributors',
         ]
@@ -49,9 +46,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             last_name=validated_data['last_name'],
             email=validated_data['email'],
             password=validated_data['password'],
-            is_superuser=validated_data['is_superuser'],
-            is_staff=validated_data['is_staff'],
-            is_active=validated_data['is_active'],
         )
         return user
 
@@ -72,3 +66,6 @@ class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectContributor
         fields = ['id', 'permission', 'user', 'project']
+
+    def create(self, validated_data):
+        return ProjectContributor.objects.create(**validated_data)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from users.models import User, ProjectContributor
 from .models import Project
 
 
@@ -11,6 +12,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     contributors = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='contributor-detail'
     )
+    assignee = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = Project
@@ -21,9 +23,10 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'title',
             'description',
             'type_choices',
-            'is_active',
+            'assignee',
             'created',
             'modified',
+            'is_active',
             'issues',
             'contributors',
         ]
@@ -42,11 +45,12 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         instance.type_choices = validated_data.get(
             'type_choices', instance.type_choices
         )
-        instance.is_active = validated_data.get(
-            'is_active', instance.is_active
-        )
+        instance.assignee = validated_data.get('assignee', instance.assignee)
         instance.created = validated_data.get('created', instance.created)
         instance.modified = validated_data.get('modified', instance.modified)
         instance.author = validated_data.get('author', instance.author)
+        instance.is_active = validated_data.get(
+            'is_active', instance.is_active
+        )
         instance.save()
         return instance

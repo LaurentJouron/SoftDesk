@@ -36,13 +36,6 @@ class Issue(models.Model):
         on_delete=models.CASCADE,
         related_name='issues_created',
     )
-    assignee = models.ForeignKey(
-        'users.User',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='assigned_issues',
-    )
     project = models.ForeignKey(
         'projects.Project', related_name='issues', on_delete=models.CASCADE
     )

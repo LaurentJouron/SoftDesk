@@ -5,7 +5,7 @@ from .models import User, ProjectContributor
 from .serializers import UserSerializer, ContributorSerializer
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed (Read-only).
 
