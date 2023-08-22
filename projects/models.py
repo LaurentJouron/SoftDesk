@@ -24,12 +24,10 @@ class Project(models.Model):
             "Each project has an author. This author is a user who can have multiple projects"
         ),
     )
-    assignee = models.ForeignKey(
+    assignees = models.ManyToManyField(
         'users.User',
-        on_delete=models.CASCADE,
-        null=True,
         blank=True,
-        related_name='assigned_issues',
+        related_name='assigned_projects',
     )
 
     def __str__(self):

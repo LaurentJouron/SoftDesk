@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from users.serializers import ContributorSerializer
+# from users.serializers import ContributorSerializer
 from .models import Issue
 
 
@@ -9,7 +9,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
     assignee = serializers.SlugRelatedField(
         many=False, read_only=True, slug_field='username'
     )
-    contributors = ContributorSerializer(many=True, read_only=True)
+    # contributors = ContributorSerializer(many=True, read_only=True)
     comments = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='comment-detail'
     )
@@ -30,7 +30,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
             'author',
             'assignee',
             'project',
-            'contributors',
+            # 'contributors',
             'comments',
         ]
 
