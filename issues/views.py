@@ -26,3 +26,8 @@ class IssueViewSet(viewsets.ModelViewSet):
                     pass
         else:
             serializer.save()
+
+    def get_queryset(self):
+        return self.queryset.filter(
+            project_id=self.kwargs.get('project_id')
+        ).filter(author=self.request.user)
