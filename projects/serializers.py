@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from users.models import User
-from .models import Project
+from .models import Project, TypeChoice
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,6 +12,9 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     contributor = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), many=True
     )
+    type_choice = serializers.PrimaryKeyRelatedField(
+        queryset=TypeChoice.objects.all(), many=False
+    )
 
     class Meta:
         model = Project
@@ -21,7 +24,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'author',
             'title',
             'description',
-            'type_choices',
+            'type_choice',
             'contributor',
             'created',
             'modified',
@@ -41,5 +44,5 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         contributors_data = validated_data.pop('contributor', [])
         instance = super().update(instance, validated_data)
-        instance.assignees.set(contributors_data)
+        instance.contributor.set(contributors_data)
         return instance

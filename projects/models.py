@@ -3,16 +3,23 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 
+class TypeChoice(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Project(models.Model):
-    TYPE_CHOICES = [
-        ('BACK-END', 'Back-end'),
-        ('FRONT-END', 'Front-end'),
-        ('IOS', 'iOS'),
-        ('ANDROID', 'Android'),
-    ]
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    type_choices = models.CharField(choices=TYPE_CHOICES, max_length=40)
+    type_choice = models.ForeignKey(
+        'projects.TypeChoice',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="projects",
+    )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

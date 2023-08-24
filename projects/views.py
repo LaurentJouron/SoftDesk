@@ -15,8 +15,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     def get_queryset(self):
-        user = self.request.user
-        return Project.objects.filter(author=user)
+        return Project.objects.filter(author=self.request.user)
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
