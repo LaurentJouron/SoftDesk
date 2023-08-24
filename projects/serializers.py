@@ -9,7 +9,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     issues = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='issue-detail'
     )
-    assignees = serializers.PrimaryKeyRelatedField(
+    contributor = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), many=True
     )
 
@@ -22,7 +22,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'title',
             'description',
             'type_choices',
-            'assignees',
+            'contributor',
             'created',
             'modified',
             'is_active',
@@ -33,13 +33,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         return self.title
 
     def create(self, validated_data):
-        assignees_data = validated_data.pop('assignees', [])
+        contributors_data = validated_data.pop('contributor', [])
         project = Project.objects.create(**validated_data)
-        project.assignees.set(assignees_data)
+        project.contributor.set(contributors_data)
         return project
 
     def update(self, instance, validated_data):
-        assignees_data = validated_data.pop('assignees', [])
+        contributors_data = validated_data.pop('contributor', [])
         instance = super().update(instance, validated_data)
-        instance.assignees.set(assignees_data)
+        instance.assignees.set(contributors_data)
         return instance

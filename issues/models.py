@@ -39,6 +39,12 @@ class Issue(models.Model):
     project = models.ForeignKey(
         'projects.Project', related_name='issues', on_delete=models.CASCADE
     )
+    assignee = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='issues_assigned',
+    )
 
     def __str__(self):
         return f'{self.title}'

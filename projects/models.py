@@ -20,14 +20,11 @@ class Project(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='projects',
         on_delete=models.CASCADE,
-        help_text=_(
-            "Each project has an author. This author is a user who can have multiple projects"
-        ),
     )
-    assignees = models.ManyToManyField(
-        'users.User',
+    contributor = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
         blank=True,
-        related_name='assigned_projects',
+        related_name='contributed_projects',
     )
 
     def __str__(self):

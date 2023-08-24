@@ -1,8 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from projects.models import Project
-from projects.serializers import ProjectSerializer
 from .models import User
 
 
@@ -24,6 +22,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'last_name',
             'email',
             'password',
+            'is_staff',
             'projects',
         ]
 
