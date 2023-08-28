@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Issue
+from .models import Issue, TagChoice, PriorityChoice, StatusChoice
 
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,6 +11,15 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
     comments = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='comment-detail'
     )
+    tag = serializers.SlugRelatedField(
+        slug_field='name', queryset=TagChoice.objects.all()
+    )
+    priority = serializers.SlugRelatedField(
+        slug_field='name', queryset=PriorityChoice.objects.all()
+    )
+    status = serializers.SlugRelatedField(
+        slug_field='name', queryset=StatusChoice.objects.all()
+    )
 
     class Meta:
         model = Issue
@@ -19,9 +28,9 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'title',
             'description',
-            'tag_choices',
-            'priority_choices',
-            'status_choices',
+            'tag',
+            'priority',
+            'status',
             'created',
             'modified',
             'is_active',
@@ -42,15 +51,9 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         instance.description = validated_data.get(
             'description', instance.description
         )
-        instance.tag_choices = validated_data.get(
-            'tag_choices', instance.tag_choices
-        )
-        instance.priority_choices = validated_data.get(
-            'priority_choices', instance.priority_choices
-        )
-        instance.status_choices = validated_data.get(
-            'status_choices', instance.status_choices
-        )
+        instance.tag = validated_data.get('tag', instance.tag)
+        instance.priority = validated_data.get('priority', instance.priority)
+        instance.status = validated_data.get('status', instance.status)
         instance.created = validated_data.get('created', instance.created)
         instance.modified = validated_data.get('modified', instance.modified)
         instance.is_active = validated_data.get(
