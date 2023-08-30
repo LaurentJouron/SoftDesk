@@ -29,7 +29,18 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'email',
             'is_staff',
             'projects',
+            'password1',
+            'password2',
         ]
+
+    def validate(self, data):
+        if (
+            data["password1"]
+            and data["password2"]
+            and data["password1"] != data["password2"]
+        ):
+            raise serializers.ValidationError("Password mismatch")
+        return data
 
     def create(self, validated_data):
         password1 = validated_data.pop("password1")
@@ -40,15 +51,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         password1 = validated_data.pop("password1")
         password2 = validated_data.pop("password2")
-        instance.set_password(password=password1)
+        instance.set_password(password1)
+        super().update(instance, validated_data)
         instance.save()
         return instance
-
-    def validate(self, data):
-        if (
-            data['password1']
-            and data['password2']
-            and data['password1'] != data['password2']
-        ):
-            raise serializers.ValidationError("password mismatch")
-        return data

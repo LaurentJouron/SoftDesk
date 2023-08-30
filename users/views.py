@@ -10,8 +10,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
         permissions.IsAuthenticated,
     ]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('username', 'is_active')
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(username=user)

@@ -16,4 +16,4 @@ class Comment(models.Model):
     )
 
     def __str__(self):
-        return f'Comment #{self.pk} on Issue #{self.issue.pk}'
+        return self.description

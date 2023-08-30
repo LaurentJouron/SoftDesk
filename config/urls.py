@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
+    TokenBlacklistView,
 )
 
 from users.views import UserViewSet
@@ -40,6 +41,11 @@ urlpatterns += [
         'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'
     ),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path(
+        'api/token/blacklist/',
+        TokenBlacklistView.as_view(),
+        name='token_blacklist',
+    ),
 ]
 
 if settings.DEBUG:
