@@ -14,15 +14,12 @@ class IssueViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         author = self.request.user
-        assignee_data = self.request.data.get('assignee')
-        if isinstance(author, get_user_model()):
-            issue = serializer.save(author=author)
-            if assignee_data:
-                try:
-                    assignee = User.objects.get(id=assignee_data)
-                    issue.assignee = assignee
-                    issue.save()
-                except User.DoesNotExist:
-                    pass
-        else:
-            serializer.save()
+        assignee = self.request.data.get('assignee')
+        issue = serializer.save(author=author)
+        if assignee:
+            try:
+                assignee = User.objects.get(username=assignee)
+                issue.assignee = assignee
+                issue.save()
+            except User.DoesNotExist:
+                pass

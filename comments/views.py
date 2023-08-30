@@ -10,6 +10,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        author = self.request.user
+        serializer.save(author=author)
+
     def get_queryset(self):
         return self.queryset.filter(
             issue_id=self.kwargs.get('issue_id')

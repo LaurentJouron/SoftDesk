@@ -11,6 +11,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         view_name='project-detail',
         source='projects_contributed',
     )
+    password1 = serializers.CharField(
+        style={'input_type': 'password'}, write_only=True
+    )
+    password2 = serializers.CharField(
+        style={'input_type': 'password'}, write_only=True
+    )
 
     class Meta:
         model = User
@@ -21,24 +27,28 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'first_name',
             'last_name',
             'email',
-            'password',
             'is_staff',
             'projects',
         ]
 
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-        )
+        password1 = validated_data.pop("password1")
+        password2 = validated_data.pop("password2")
+        user = User.objects.create_user(password=password1, **validated_data)
         return user
 
     def update(self, instance, validated_data):
-        if 'password' in validated_data:
-            validated_data['password'] = make_password(
-                validated_data['password']
-            )
-        return super().update(instance, validated_data)
+        password1 = validated_data.pop("password1")
+        password2 = validated_data.pop("password2")
+        instance.set_password(password=password1)
+        instance.save()
+        return instance
+
+    def validate(self, data):
+        if (
+            data['password1']
+            and data['password2']
+            and data['password1'] != data['password2']
+        ):
+            raise serializers.ValidationError("password mismatch")
+        return data

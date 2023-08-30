@@ -1,8 +1,10 @@
 from re import T
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
-from users.models import User
 from .models import Project, TypeChoice
+
+User = get_user_model()
 
 
 class TypeChoiceSerializer(serializers.ModelSerializer):
@@ -16,13 +18,12 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     issues = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='issue-detail'
     )
-    contributor = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(), many=False
+    contributor = serializers.SlugRelatedField(
+        many=True, queryset=User.objects.all(), slug_field='username'
     )
-    # type_choice = serializers.PrimaryKeyRelatedField(
-    #     queryset=TypeChoice.objects.all()
-    # )
-    type_choice = TypeChoiceSerializer(many=False)
+    type_choice = serializers.SlugRelatedField(
+        queryset=TypeChoice.objects.all(), many=False, slug_field='name'
+    )
 
     class Meta:
         model = Project
@@ -42,22 +43,3 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     def __str__(self):
         return self.title
-
-    def create(self, validated_data):
-        type_choices_data = validated_data.pop('type_choice')
-        contributors_data = validated_data.pop('contributor', [])
-        project = Project.objects.create(**validated_data)
-        project.contributor.set(contributors_data)
-        for type_choice_data in type_choices_data:
-            TypeChoice.objects.create(project=project, **type_choice_data)
-        return project
-
-    def update(self, instance, validated_data):
-        contributors_data = validated_data.pop('contributor', [])
-        type_choice = validated_data.pop('type_choice', None)
-        if type_choice:
-            type_choice = TypeChoice.objects.get(name=type_choice)
-            instance.type_choice = type_choice
-        instance = super().update(instance, validated_data)
-        instance.contributor.set(contributors_data)
-        return instance
