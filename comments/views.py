@@ -2,10 +2,8 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from django_filters import rest_framework as filters
 
-# from projects.permissions import HasProjectPermission
 from .models import Comment
 from .serializers import CommentSerializer
-from .permissions import IsAuthorOrReadOnly
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -13,8 +11,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = [
         permissions.IsAuthenticated,
-        IsAuthorOrReadOnly,
-        # HasProjectPermission,
     ]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('author', 'issue_id')
@@ -26,3 +22,15 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Comment.objects.filter(author=user)
+
+        """
+            - Comment
+                - models.py                            --> ok
+                - serializers.py                       --> ok
+
+                - Visible que par les contributeurs du projet, mais suppression 
+                        et actualisation uniquement par son auteur.
+
+                - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
+                        une requete d'actualisation et suppression d'un issues/project/commentaire.
+        """

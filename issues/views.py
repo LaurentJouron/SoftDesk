@@ -4,10 +4,8 @@ from django_filters import rest_framework as filters
 
 from users.models import User
 
-# from projects.permissions import HasProjectPermission
 from .models import Issue
 from .serializers import IssueSerializer
-from .permissions import IsAuthorOrReadOnly
 
 
 class IssueViewSet(viewsets.ModelViewSet):
@@ -15,8 +13,6 @@ class IssueViewSet(viewsets.ModelViewSet):
     serializer_class = IssueSerializer
     permission_classes = [
         permissions.IsAuthenticated,
-        # HasProjectPermission,
-        IsAuthorOrReadOnly,
     ]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('author', 'is_active')
@@ -33,6 +29,19 @@ class IssueViewSet(viewsets.ModelViewSet):
             except User.DoesNotExist:
                 pass
 
-    def get_queryset(self):
-        user = self.request.user
-        return Issue.objects.filter(author=user)
+        def get_queryset(self):
+            user = self.request.user
+            return Issue.objects.filter(author=user)
+
+        """
+        - Issues
+            - models.py                            --> ok
+            - serializers.py                       --> ok
+
+            - Gestion des droits issues            --> Seul les contributeurs peuvent
+                    créer et lire les commentaires relatifs au problèmes.
+                    Il peuvent mettre à jour ou supprimer que s'il sont les auteurs.
+
+            - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
+                    une requete d'actualisation et suppression d'un issues/project/commentaire.
+        """
