@@ -10,18 +10,10 @@ from rest_framework_simplejwt.views import (
     TokenBlacklistView,
 )
 
-# from rest_framework_nested import routers
-
 from users.views import UserViewSet
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
-
-# router = routers.SimpleRouter()
-# router.register(r'projects', ProjectViewSet)
-# projects_router = routers.NestedSimpleRouter(
-#     router, r'projects', lookup='project'
-# )
 
 # Applications router
 router = DefaultRouter()
@@ -59,3 +51,34 @@ if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )
+
+
+"""
+Point de terminaison:
+    - méthode: GET
+        - Récupérer la liste de projet rattaché à l'utilisateur connecté: /projects/
+        - Récupérer les détails d'un projet via son id: /projects/{id}/
+        - Récupérer la liste de tous les utilisateur attaché à un projet: /projects/{id}/users/
+        - Récupérer la liste des issues lié à un projet: /projects/{id}/issues/
+        - Récupérer la liste des commentaires liés à un issues: /projects/{id}/issues/{id}/comments/
+        - Récupérer un commentaire via son id: /projects/{id}/issues/{id}/comments/{id}
+
+    - méthode: POST
+        - Création d'un: /signup/
+        - Connexion d'un utilisateur: /login/
+        - Création d'un projet: /projects/
+        - Création d'un contributeur à un projet: /projects/{id}/users/
+        - Création d'un issue dans un projet: /projects/{id}/issues/
+        - Création d'un commentaire sur un issue: /projects/{id}/issues/comments/
+
+    - méthode: PUT
+        - Mettre à jour un projet: /projects/{id}/
+        - Mettre à jour un issue: /projects/{id}/issues/{id}
+        - Mettre à jour un comment: /projects/{id}/issues/{id}/comments/{id}
+        
+    - méthode: DELETE
+        - Supprimer un projet et ses issues: /projects/{id}/
+        - Supprimer un utilisateur d'un projet: /projects/{id}/users/{id}
+        - Supprimer un issue d'un projet: /projects/{id}/issues/{id}
+        - Supprimer un comment: /projects/{id}/issues/{id}/comments/{id}
+"""

@@ -33,15 +33,13 @@ class IssueViewSet(viewsets.ModelViewSet):
             user = self.request.user
             return Issue.objects.filter(author=user)
 
-        """
-        - Issues
-            - models.py                            --> ok
-            - serializers.py                       --> ok
 
-            - Gestion des droits issues            --> Seul les contributeurs peuvent
-                    créer et lire les commentaires relatifs au problèmes.
-                    Il peuvent mettre à jour ou supprimer que s'il sont les auteurs.
+"""
+- Issues
+    - Gestion des droits issues --> Seul les contributeurs peuvent
+            créer et lire les commentaires relatifs au problèmes.
+            Il peuvent mettre à jour ou supprimer que s'il sont les auteurs.
 
-            - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
-                    une requete d'actualisation et suppression d'un issues/project/commentaire.
-        """
+    - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
+            une requete d'actualisation et suppression d'un issues/project/commentaire.
+"""

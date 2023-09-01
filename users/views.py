@@ -19,17 +19,3 @@ class UserViewSet(viewsets.ModelViewSet):
         if user.is_superuser:
             return self.queryset
         return self.queryset.filter(pk=user.pk)
-
-        """
-        - Authentification des utilisateurs
-            - models.py           --> ok
-            - serializers.py      --> ok
-            - Inscription         --> ok
-            - Connexion           --> ok
-            - Utilisation de JWT  --> ok
-
-        Point de terminaison:
-            - méthode: POST
-                - Inscription de l'utilisateur: /signup/    # A date: http://127.0.0.1:8000/users/
-                - Connexion de l'utilisateur: /login/       # A date: http://127.0.0.1:8000/api-auth/login/?next=/
-        """
