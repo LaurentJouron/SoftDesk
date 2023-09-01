@@ -28,7 +28,7 @@ class CommentViewSet(viewsets.ModelViewSet):
                 - models.py                            --> ok
                 - serializers.py                       --> ok
 
-                - Visible que par les contributeurs du projet, mais suppression 
+                - Visible que par les contributeurs du projet, mais suppression
                         et actualisation uniquement par son auteur.
 
                 - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre

@@ -12,6 +12,7 @@ django-rest-swagger = "*"
 coreapi = "*"
 pytest = "*"
 django-filter = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 

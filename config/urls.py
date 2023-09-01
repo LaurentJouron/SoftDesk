@@ -10,11 +10,18 @@ from rest_framework_simplejwt.views import (
     TokenBlacklistView,
 )
 
+# from rest_framework_nested import routers
+
 from users.views import UserViewSet
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
 
+# router = routers.SimpleRouter()
+# router.register(r'projects', ProjectViewSet)
+# projects_router = routers.NestedSimpleRouter(
+#     router, r'projects', lookup='project'
+# )
 
 # Applications router
 router = DefaultRouter()

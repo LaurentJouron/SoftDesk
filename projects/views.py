@@ -34,7 +34,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             - Association des issues               --> ok
 
             - Gestion d'affichage pour contributor --> ok, a voir si il doit les voir, mais ne doit pas pouvoir changer 
-                    ou s'il ne dois pas les voir. Actuellement tel que c'est configuré, 
+                    ou s'il ne dois pas les voir. Actuellement tel que c'est configuré,
                     il ne voit que si est contributeur du project.
 
             - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre

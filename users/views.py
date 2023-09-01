@@ -17,19 +17,19 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if user.is_superuser:
-            return User.objects.all()
-        return User.objects.filter(username=user)
+            return self.queryset
+        return self.queryset.filter(pk=user.pk)
 
         """
         - Authentification des utilisateurs
             - models.py           --> ok
             - serializers.py      --> ok
-            - Inscription         --> ok, mais à voir si l'inscription doit se faire hors connexion
+            - Inscription         --> ok
             - Connexion           --> ok
             - Utilisation de JWT  --> ok
 
         Point de terminaison:
             - méthode: POST
-                - Inscription de l'utilisateur: /signup/    # A date: http://127.0.0.1:8000/api-auth/login/?next=/
-                - Connexion de l'utilisateur: /login/       # A date: http://127.0.0.1:8000/users/
+                - Inscription de l'utilisateur: /signup/    # A date: http://127.0.0.1:8000/users/
+                - Connexion de l'utilisateur: /login/       # A date: http://127.0.0.1:8000/api-auth/login/?next=/
         """
