@@ -23,14 +23,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Comment.objects.filter(author=user)
 
-        """
-            - Comment
-                - models.py                            --> ok
-                - serializers.py                       --> ok
 
-                - Visible que par les contributeurs du projet, mais suppression
-                        et actualisation uniquement par son auteur.
+"""
+- Comment
+    - Visible que par les contributeurs du projet, mais suppression
+            et actualisation uniquement par son auteur.
 
-                - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
-                        une requete d'actualisation et suppression d'un issues/project/commentaire.
-        """
+    - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
+            une requete d'actualisation et suppression d'un issues/project/commentaire.
+"""

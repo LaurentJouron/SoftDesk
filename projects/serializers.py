@@ -16,10 +16,15 @@ class TypeChoiceSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     issues = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name='issue-detail'
+        many=True,
+        read_only=True,
+        view_name='issue-detail',
+        lookup_field='title',
     )
     contributor = serializers.SlugRelatedField(
-        many=True, queryset=User.objects.all(), slug_field='username'
+        many=True,
+        queryset=User.objects.all(),
+        slug_field='username',
     )
     type_choice = serializers.SlugRelatedField(
         queryset=TypeChoice.objects.all(), many=False, slug_field='name'

@@ -41,5 +41,5 @@ class IssueViewSet(viewsets.ModelViewSet):
             Il peuvent mettre à jour ou supprimer que s'il sont les auteurs.
 
     - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
-            une requete d'actualisation et suppression d'un issues/project/commentaire.
+        une requete d'actualisation et suppression d'un issues/project/commentaire.
 """
