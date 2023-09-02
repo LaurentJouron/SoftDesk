@@ -179,7 +179,7 @@ ___________
 Exemple:
 ```json
 {
-    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MTgzOTU3MiwiaWF0IjoxNjkxNzUzMTcyLCJqdGkiOiJlZTc2ODQ4YmYzNGQ0ODI1OTQ5YTcyYTE2NGI3YTJlNSIsInVzZXJfaWQiOjF9.M9eSGmRkcf1wMS2iDVe2l0PH8Zm9HDMi7eDUDF6QN_Q",
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MTgzOTU3MiwiaWF0IjoxNjkxNzUzMTcyLCJqdGkiOiJlZTc2ODQ4YmYzNGQ0ODI1OTQ5YTcyYTE2NGI3YTJlNSIsInVzZXJfaWQiOjF9.M9eSGmRkcf1wMS2iDVe2l0PH8Zm9HDMi7eDUDF6QN_Q",
     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxNzcxMTcyLCJpYXQiOjE2OTE3NTMxNzIsImp0aSI6IjhlNDA3MWEzYjhiNDRiMmNhOWRiM2IwZTU2MWU5OTMyIiwidXNlcl9pZCI6MX0.iT_s2w4pAhrP0kQLz3L5UV2BTLt0ycl7igIY6ZY5gX8"
 }
 ```
@@ -200,8 +200,51 @@ Exemple:
 * Cliquez sur le bouton "Send" pour envoyer la requête GET à votre API Django Rest Framework avec le jeton CSRF inclus dans l'en-tête "X-CSRFToken".
 
 * Vous devriez recevoir une réponse de l'API, indiquant que la requête a été traitée avec succès ou affichant toute erreur éventuelle.
+  
 ___________
+  
+<h1 align="center">Points de terminaison</h1>
 
+<h3>Méthode: GET</h3>
+
+- Récupérer la liste de projet rattaché à l'utilisateur connecté: `/projects/ `
+- Récupérer les détails d'un projet via son id: `/projects/{id}/`
+- Récupérer la liste de tous les utilisateur attaché à un projet: `/projects/{id}/users/`
+- Récupérer la liste des issues lié à un projet: `/projects/{id}/issues/`
+- Récupérer la liste des commentaires liés à un issues: `/projects/{id}/issues/{id}/comments/`
+- Récupérer un commentaire via son id: `/projects/{id}/issues/{id}/comments/{id}`
+
+<h3>Méthode: POST</h3>
+
+- Création d'un utilisateur: `/signup/`
+- Connexion de l'utilisateur: `/login/`
+- Création d'un projet: `/projects/`
+- Création d'un contributeur à un projet: `/projects/{id}/users/`
+- Création d'un issue dans un projet: `/projects/{id}/issues/`
+- Création d'un commentaire sur un issue: `/projects/{id}/issues/comments/`
+
+<h3>Méthode: PUT</h3>
+
+- Mettre à jour un projet: `/projects/{id}/`
+- Mettre à jour un issue: `/projects/{id}/issues/{id}`
+- Mettre à jour un comment: `/projects/{id}/issues/{id}/comments/{id}`
+
+<h3>Méthode: DELETE</h3>
+
+- Supprimer un projet et ses issues: `/projects/{id}/`
+- Supprimer un utilisateur d'un projet: `/projects/{id}/users/{id}`
+- Supprimer un issue d'un projet: `/projects/{id}/issues/{id}`
+- Supprimer un comment: `/projects/{id}/issues/{id}/comments/{id}`
+___________
+  
+<h1 align="center">Permissions</h1>
+
+- Projects
+    - Si l'utilisateur n'esdwt pas contributeur d'un projet --> Il ne doit le voir.
+
+    - Interdiction à tout utilisateur autorisé autre que l'auteur d'émettre
+            une requete d'actualisation et suppression d'un issues/project/commentaire.
+___________
 <h1 align="center">Auteur et collaborateurs</h1>
 
 <table>

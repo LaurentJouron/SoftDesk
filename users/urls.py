@@ -6,7 +6,7 @@ from users.views import UserViewSet
 urlpatterns = [
     path(
         '',
-        UserViewSet.as_view({'get': 'list', 'post': 'create'}),
+        UserViewSet.as_view({'get': 'list'}),
         name='user-list',
     ),
     path(

@@ -2,37 +2,41 @@ from django.urls import path, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
     TokenBlacklistView,
 )
+from rest_framework_nested import routers
 
-# from rest_framework_nested import routers
-
-from users.views import UserViewSet
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
 
-# router = routers.SimpleRouter()
-# router.register(r'projects', ProjectViewSet)
-# projects_router = routers.NestedSimpleRouter(
-#     router, r'projects', lookup='project'
-# )
+# URLs imbriquées
+router = routers.SimpleRouter()
+router.register(r'projects', ProjectViewSet)
+
+# issues sous les projets
+projects_router = routers.NestedSimpleRouter(
+    router, r'projects', lookup='project'
+)
+projects_router.register(r'issues', IssueViewSet, basename='project-issues')
+
+# commentaires sous les issues
+issues_router = routers.NestedSimpleRouter(
+    projects_router, r'issues', lookup='issue'
+)
+issues_router.register(r'comments', CommentViewSet, basename='issue-comments')
+
 
 # Applications router
-router = DefaultRouter()
-router.register(r'users', UserViewSet, basename="users")
-router.register(r'projects', ProjectViewSet, basename="project")
-router.register(r'issues', IssueViewSet, basename="issue")
-router.register(r'comments', CommentViewSet, basename="comment")
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('', include(projects_router.urls)),
+    path('', include(issues_router.urls)),
     path('users/', include('users.urls')),
 ]
 
@@ -59,3 +63,33 @@ if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )
+
+"""
+Point de terminaison:
+    - méthode: GET
+        - Récupérer la liste de projet rattaché à l'utilisateur connecté: /projects/ 
+        - Récupérer les détails d'un projet via son id: /projects/{id}/
+        - Récupérer la liste de tous les utilisateur attaché à un projet: /projects/{id}/users/
+        - Récupérer la liste des issues lié à un projet: /projects/{id}/issues/
+        - Récupérer la liste des commentaires liés à un issues: /projects/{id}/issues/{id}/comments/
+        - Récupérer un commentaire via son id: /projects/{id}/issues/{id}/comments/{id}
+
+    - méthode: POST
+        - Création d'un utilisateur: /signup/
+        - Connexion de l'utilisateur: /login/
+        - Création d'un projet: /projects/
+        - Création d'un contributeur à un projet: /projects/{id}/users/
+        - Création d'un issue dans un projet: /projects/{id}/issues/
+        - Création d'un commentaire sur un issue: /projects/{id}/issues/comments/
+
+    - méthode: PUT
+        - Mettre à jour un projet: /projects/{id}/
+        - Mettre à jour un issue: /projects/{id}/issues/{id}
+        - Mettre à jour un comment: /projects/{id}/issues/{id}/comments/{id}
+        
+    - méthode: DELETE
+        - Supprimer un projet et ses issues: /projects/{id}/
+        - Supprimer un utilisateur d'un projet: /projects/{id}/users/{id}
+        - Supprimer un issue d'un projet: /projects/{id}/issues/{id}
+        - Supprimer un comment: /projects/{id}/issues/{id}/comments/{id}
+"""
