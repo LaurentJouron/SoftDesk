@@ -13,35 +13,45 @@ from rest_framework_nested import routers
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
+from users.views import UserViewSet
 
 # URLs imbriquées
 router = routers.SimpleRouter()
-router.register(r'projects', ProjectViewSet)
+router.register('projects', ProjectViewSet)
+router.register('issues', IssueViewSet)
+router.register('comments', CommentViewSet)
+router.register('user', UserViewSet)
 
-# issues sous les projets
+# Issues sous les projets
+router.register("issues", IssueViewSet)
 projects_router = routers.NestedSimpleRouter(
-    router, r'projects', lookup='project'
+    router, 'projects', lookup='project'
 )
-projects_router.register(r'issues', IssueViewSet, basename='project-issues')
+projects_router.register('issues', IssueViewSet, basename='project-issues')
 
-# commentaires sous les issues
+# Commentaires sous les issues
 issues_router = routers.NestedSimpleRouter(
-    projects_router, r'issues', lookup='issue'
+    projects_router, 'issues', lookup='issue'
 )
-issues_router.register(r'comments', CommentViewSet, basename='issue-comments')
+issues_router.register('comments', CommentViewSet, basename='issue-comments')
 
-
-# Applications router
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('users.urls')),
+]
+
+# Applications router
+urlpatterns += [
     path('', include(router.urls)),
     path('', include(projects_router.urls)),
     path('', include(issues_router.urls)),
-    path('users/', include('users.urls')),
 ]
 
 # Authentification and Token management
 urlpatterns += [
+    path(
+        'api-auth/', include('rest_framework.urls', namespace='rest_framework')
+    ),
     path(
         'api-auth/', include('rest_framework.urls', namespace='rest_framework')
     ),

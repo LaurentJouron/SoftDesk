@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from rest_framework.response import Response
+from django.db.models import Q
 from rest_framework import viewsets
 
 from .models import Project
@@ -19,9 +19,4 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(contributor=user)
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Project.objects.filter(Q(contributor=user) ^ Q(author=user))

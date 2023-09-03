@@ -15,12 +15,6 @@ class TypeChoiceSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    issues = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='issue-detail',
-        lookup_field='title',
-    )
     contributor = serializers.SlugRelatedField(
         many=True,
         queryset=User.objects.all(),
