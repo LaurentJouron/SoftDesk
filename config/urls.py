@@ -20,11 +20,14 @@ router = routers.SimpleRouter()
 router.register("projects", ProjectViewSet)
 router.register("issues", IssueViewSet)
 router.register("comments", CommentViewSet)
-# router.register("user", UserViewSet)
+router.register("user", UserViewSet)
 
 # Issues under projets
 projects_router = routers.NestedSimpleRouter(router, "projects", lookup="project")
 projects_router.register("issues", IssueViewSet, basename="project-issues")
+
+# Users under projets
+projects_router.register("users", UserViewSet, basename="project-users")
 
 # Comments under issues
 issues_router = routers.NestedSimpleRouter(projects_router, "issues", lookup="issue")

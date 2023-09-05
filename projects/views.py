@@ -40,7 +40,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset of Project objects.
         """
         user = self.request.user
-        return Project.objects.filter(Q(contributor=user) ^ Q(author=user))
+        # return Project.objects.filter(Q(contributor=user) ^ Q(author=user))
+        return Project.objects.filter(Q(author=user))
 
     def perform_create(self, serializer):
         """

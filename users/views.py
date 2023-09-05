@@ -5,7 +5,6 @@ from django_filters import rest_framework as filters
 from .models import User
 from .serializers import UserSerializer
 
-
 class UserViewSet(viewsets.ModelViewSet):
     """
     ViewSet for the User model.

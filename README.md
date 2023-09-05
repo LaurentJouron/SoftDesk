@@ -209,7 +209,7 @@ ___________
 
 - Récupérer la liste de projet rattaché à l'utilisateur connecté: `/projects/ `
 - Récupérer les détails d'un projet via son id: `/projects/{id}/`
-- Récupérer la liste de tous les utilisateur attaché à un projet: `/projects/{id}/users/`
+- Récupérer la liste de tous les utilisateurs attaché à un projet: `/projects/{id}/users/`
 - Récupérer la liste des issues lié à un projet: `/projects/{id}/issues/`
 - Récupérer la liste des commentaires liés à un issues: `/projects/{id}/issues/{id}/comments/`
 - Récupérer un commentaire via son id: `/projects/{id}/issues/{id}/comments/{id}`
