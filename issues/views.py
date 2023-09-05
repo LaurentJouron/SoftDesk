@@ -1,25 +1,60 @@
 from rest_framework import permissions
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
-
 from users.models import User
-
 from .models import Issue
 from .serializers import IssueSerializer
 
 
 class IssueViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing issues.
+
+    This ViewSet provides CRUD operations for Issue objects with specific permissions
+    and restrictions.
+
+    Attributes:
+        queryset (QuerySet): The queryset of Issue objects.
+        serializer_class (IssueSerializer): The serializer class for Issue objects.
+        permission_classes (list): The list of permission classes for this view.
+        filter_backends (tuple): The tuple of filter backends used for filtering.
+        filterset_fields (tuple): The tuple of fields available for filtering.
+
+    Methods:
+        perform_create: Creates a new Issue with the requesting user as the author and assigns it to an optional assignee.
+        get_queryset: Returns the queryset of Issue objects authored by the requesting user.
+    """
+
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     permission_classes = [
         permissions.IsAuthenticated,
     ]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('author', 'is_active')
+    filterset_fields = ("author", "is_active")
+
+    def get_queryset(self):
+        """
+        Returns the queryset of Issue objects authored by the requesting user.
+
+        Returns:
+            QuerySet: The filtered queryset of Issue objects.
+        """
+        user = self.request.user
+        return Issue.objects.filter(author=user)
 
     def perform_create(self, serializer):
+        """
+        Creates a new Issue with the requesting user as the author and assigns it to an optional assignee.
+
+        Args:
+            serializer: The serializer containing issue data.
+
+        Returns:
+            None
+        """
         author = self.request.user
-        assignee = self.request.data.get('assignee')
+        assignee = self.request.data.get("assignee")
         issue = serializer.save(author=author)
         if assignee:
             try:
@@ -28,18 +63,3 @@ class IssueViewSet(viewsets.ModelViewSet):
                 issue.save()
             except User.DoesNotExist:
                 pass
-
-    def get_queryset(self):
-        user = self.request.user
-        return Issue.objects.filter(author=user)
-
-
-"""
-- Issues
-    - Gestion des droits issues            --> Seul les contributeurs peuvent
-            créer et lire les commentaires relatifs au problèmes.
-            Il peuvent mettre à jour ou supprimer que s'il sont les auteurs.
-
-    - Interdit à tout utilisateur autorisé autre que l'auteur d'émettre
-        une requete d'actualisation et suppression d'un issues/project/commentaire.
-"""
