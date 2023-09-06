@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from django_filters import rest_framework as filters
 
 from .models import User
+from .permissions import IsOwnUser
 from .serializers import UserSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -24,10 +25,9 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
-        permissions.IsAuthenticated,
+        permissions.IsAuthenticated | IsOwnUser
     ]
-    filter_backends = (filters.DjangoFilterBackend,)
-
+    
     def get_queryset(self):
         """
         Returns the queryset of User objects, filtered for non-superusers.
@@ -38,6 +38,8 @@ class UserViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset of User objects.
         """
         user = self.request.user
+
         if user.is_superuser:
             return self.queryset
-        return self.queryset.filter(pk=user.pk)
+        # return self.queryset.filter(pk=user.pk)
+        return self.queryset.all()

@@ -16,11 +16,11 @@ from comments.views import CommentViewSet
 from users.views import UserViewSet
 
 # Nested URLs
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register("projects", ProjectViewSet)
 router.register("issues", IssueViewSet)
 router.register("comments", CommentViewSet)
-router.register("user", UserViewSet)
+router.register("users", UserViewSet)
 
 # Issues under projets
 projects_router = routers.NestedSimpleRouter(router, "projects", lookup="project")
@@ -35,7 +35,6 @@ issues_router.register("comments", CommentViewSet, basename="issue-comments")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("users.urls")),
 ]
 
 # Router applications
@@ -47,7 +46,6 @@ urlpatterns += [
 
 # Authentification and Token management
 urlpatterns += [
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

@@ -31,7 +31,7 @@ class IssueViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated,
     ]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ("author", "is_active")
+    filterset_fields = ("status")
 
     def get_queryset(self):
         """
@@ -41,7 +41,7 @@ class IssueViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset of Issue objects.
         """
         user = self.request.user
-        return Issue.objects.filter(author=user)
+        return Issue.objects.filter(Q(author=user) | Q(assignee=user))
 
     def perform_create(self, serializer):
         """
