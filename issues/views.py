@@ -1,7 +1,8 @@
+from django.db.models import Q
 from rest_framework import permissions
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
-from django.db.models import Q
+
 from users.models import User
 from projects.permissions import IsAuthorOrReadOnly
 from .models import Issue

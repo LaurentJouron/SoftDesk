@@ -43,6 +43,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'last_name',
             'email',
             'is_staff',
+            'is_active',
             'projects',
             'password1',
             'password2',

@@ -33,6 +33,7 @@ projects_router.register("users", UserViewSet, basename="project-users")
 issues_router = routers.NestedSimpleRouter(projects_router, "issues", lookup="issue")
 issues_router.register("comments", CommentViewSet, basename="issue-comments")
 
+# Base and admin Router
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]

@@ -1,10 +1,10 @@
-from rest_framework import permissions
 from django.db.models import Q
+from rest_framework import permissions
 from rest_framework import viewsets
 
 from .models import Project
-from .permissions import IsAuthorOrReadOnly
 from .serializers import ProjectSerializer
+from .permissions import IsAuthorOrReadOnly
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

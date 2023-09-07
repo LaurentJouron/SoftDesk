@@ -1,9 +1,10 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
+from django_filters import rest_framework as filters
 
 from .models import User
-from .permissions import IsOwnProfile
 from .serializers import UserSerializer
+from .permissions import IsOwnProfile
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -26,6 +27,8 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
         IsAuthenticated, IsOwnProfile
     ]
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('username', 'is_active')
     
     def get_queryset(self):
         """

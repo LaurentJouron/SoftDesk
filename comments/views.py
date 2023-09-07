@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
 from django_filters import rest_framework as filters
+
 from projects.permissions import IsAuthorOrReadOnly
 from .models import Comment
 from .serializers import CommentSerializer
