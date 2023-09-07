@@ -1,26 +1,11 @@
-# from rest_framework import permissions
-# from .models import Project
+from rest_framework import permissions
 
-
-# class CanDeleteAuthorProject(permissions.BasePermission):
-#     def has_permission(self, request, view):
-#         if request.method == "DELETE":
-#             user = request.user
-#             project_id = view.kwargs.get("pk")
-#             if project.author == user:
-#                 try:
-#                     project = Project.objects.get(pk=project_id)
-#                     return project.author == user
-#                 except Project.DoesNotExist:
-#                     return False
-#             return True
-
-
-# class CanViewProject(permissions.BasePermission):
-#     def has_permission(self, request, view):
-#         ...
-
-
-# class CanEditProject(permissions.BasePermission):
-#     def has_permission(self, request, view):
-#         ...
+class IsAuthorOrReadOnly(permissions.BasePermission):
+    """
+    Object-level permission to only allow author of an object to edit it.
+    Assumes the model instance has an `author` attribute.
+    """
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.author == request.user

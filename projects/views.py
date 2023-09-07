@@ -3,6 +3,7 @@ from django.db.models import Q
 from rest_framework import viewsets
 
 from .models import Project
+from .permissions import IsAuthorOrReadOnly
 from .serializers import ProjectSerializer
 
 
@@ -26,22 +27,23 @@ class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [
-        permissions.IsAuthenticated,
+        permissions.IsAuthenticated, IsAuthorOrReadOnly
     ]
 
     def get_queryset(self):
         """
-        Returns the queryset of Project objects, including active contributors.
-
-        This method filters the queryset to include only projects where the requesting
+        Returns the queryset of Project objects, including projects where the requesting
         user is either the author or an active contributor.
+
+        This method filters the queryset to include projects where the requesting user
+        is either the author or an active contributor. It uses the logical OR operator
+        to combine these conditions.
 
         Returns:
             QuerySet: The filtered queryset of Project objects.
         """
         user = self.request.user
         return Project.objects.filter(Q(contributor=user) | Q(author=user)).distinct()
-        # return Project.objects.filter(Q(author=user))
 
     def perform_create(self, serializer):
         """

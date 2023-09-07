@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
 from django_filters import rest_framework as filters
+from projects.permissions import IsAuthorOrReadOnly
 from .models import Comment
 from .serializers import CommentSerializer
 
@@ -27,10 +28,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [
-        permissions.IsAuthenticated,
+        permissions.IsAuthenticated, IsAuthorOrReadOnly
     ]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('author', 'issue_id')
 
     def perform_create(self, serializer):
         """

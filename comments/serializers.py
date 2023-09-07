@@ -15,7 +15,6 @@ class CommentSerializer(serializers.ModelSerializer):
         author (SlugRelatedField): The username of the author of the Comment.
         created (DateTimeField): The timestamp when the Comment was created.
         modified (DateTimeField): The timestamp when the Comment was last modified.
-        issue (SlugRelatedField): The title of the issue to which the Comment is related.
 
     Methods:
         None
@@ -23,9 +22,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     author = serializers.SlugRelatedField(
         many=False, read_only=True, slug_field='username'
-    )
-    issue = serializers.SlugRelatedField(
-        many=False, read_only=True, slug_field='title'
     )
 
     class Meta:

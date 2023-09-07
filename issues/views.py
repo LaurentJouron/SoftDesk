@@ -1,7 +1,9 @@
 from rest_framework import permissions
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
+from django.db.models import Q
 from users.models import User
+from projects.permissions import IsAuthorOrReadOnly
 from .models import Issue
 from .serializers import IssueSerializer
 
@@ -28,10 +30,10 @@ class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     permission_classes = [
-        permissions.IsAuthenticated,
+        permissions.IsAuthenticated, IsAuthorOrReadOnly
     ]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ("status")
+    filterset_fields = ["status"]
 
     def get_queryset(self):
         """
