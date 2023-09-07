@@ -102,22 +102,16 @@ Pour installer les dépendances du projet, nous utilisons l'outil pipenv que vou
   * ``pip install pipx``
   * ``pipx ensurepath``
   * ``pipx install pipenv``
-
-Commencez par cloner le projet grâce à l'url suivante :
+* Cloner le projet avec l'url suivante :
   * ``git clone https://github.com/LaurentJouron/SoftDesk.git``
-
 * Déplacez vous dans le dossier:
   * ``cd SoftDesk``
-
 * Créer un répertoire avec le nom .venv
   * ``mkdir .venv``
-
 * Installer les dépendances nécessaires:
   * ``pipenv install``
-
 * Activez l'environnement virtuel:
   * ``pipenv shell``
-
 * Démarrer le serveur Django:
   * ``python manage.py runserver``
 
@@ -165,20 +159,44 @@ Les tables choices on étés programmées de façon à pouvoir les faire évolue
 
 ---
 
+<h1 align="center">Points de terminaison</h1>
+
+* Méthode: GET
+  * Récupérer la liste de projet rattaché à l'utilisateur connecté: ``/projects/ ``
+  * Récupérer les détails d'un projet via son id: ``/projects/{id}/``
+  * Récupérer la liste de tous les utilisateurs attaché à un projet: ``/projects/{id}/users/``
+  * Récupérer la liste des issues lié à un projet: ``/projects/{id}/issues/``
+  * Récupérer la liste des commentaires liés à un issues: ``/projects/{id}/issues/{id}/comments/``
+  * Récupérer un commentaire via son id: ``/projects/{id}/issues/{id}/comments/{id}``
+* Méthode: POST
+  * Création d'un utilisateur: ``/signup/``
+  * Connexion de l'utilisateur: ``/login/``
+  * Création d'un projet: ``/projects/``
+  * Création d'un contributeur à un projet: ``/projects/{id}/users/``
+  * Création d'un issue dans un projet: ``/projects/{id}/issues/``
+  * Création d'un commentaire sur un issue: ``/projects/{id}/issues/comments/``
+* Méthode: PUT
+  * Mettre à jour un projet: ``/projects/{id}/``
+  * Mettre à jour un issue: ``/projects/{id}/issues/{id}``
+  * Mettre à jour un comment: ``/projects/{id}/issues/{id}/comments/{id}``
+* Méthode: DELETE
+  * Supprimer un projet et ses issues: ``/projects/{id}/``
+  * Supprimer un utilisateur d'un projet: ``/projects/{id}/users/{id}``
+  * Supprimer un issue d'un projet: ``/projects/{id}/issues/{id}``
+  * Supprimer un comment: ``/projects/{id}/issues/{id}/comments/{id}``
+
+
+---
+
 <h1 align="center">Effectuer une requête POST avec le jeton CSRF (Postman)</h1>
 <h3>Obtenez le jeton CSRF</h3>
 
-- Ouvrez l'application Postman sur votre ordinateur.
-
-- Cliquez sur le bouton "New" pour créer une nouvelle requête.
-
-- Dans le champ "Request Name", donnez un nom significatif à votre requête.
-
-- Dans le champ "Request URL", saisissez l'URL : http://127.0.0.1:8000/api/token/
-
-- Dans le champ "Request Method", sélectionnez "POST" dans le menu déroulant.
-
-- Dans l'onglet Body, séléctonnez raw, coller et cliquez sur send
+* Ouvrez l'application Postman sur votre ordinateur.
+* Cliquez sur le bouton "New" pour créer une nouvelle requête.
+* Dans le champ "Request Name", donnez un nom significatif à votre requête.
+* Dans le champ "Request URL", saisissez l'URL : http://127.0.0.1:8000/api/token/
+* Dans le champ "Request Method", sélectionnez "POST" dans le menu déroulant.
+* Dans l'onglet Body, séléctonnez raw, coller et cliquez sur send
 
 ```json
 {
@@ -186,11 +204,9 @@ Les tables choices on étés programmées de façon à pouvoir les faire évolue
   "password": "test"
 }
 ```
-
-- Cliquez sur l'onglet "Headers" sous l'URL de la requête. Vous obtiendrez votre Token.
+* Cliquez sur l'onglet "Headers" sous l'URL de la requête. Vous obtiendrez votre Token.
 
 Exemple:
-
 ```json
 {
   "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MTgzOTU3MiwiaWF0IjoxNjkxNzUzMTcyLCJqdGkiOiJlZTc2ODQ4YmYzNGQ0ODI1OTQ5YTcyYTE2NGI3YTJlNSIsInVzZXJfaWQiOjF9.M9eSGmRkcf1wMS2iDVe2l0PH8Zm9HDMi7eDUDF6QN_Q",
@@ -198,68 +214,17 @@ Exemple:
 }
 ```
 
-- Copiez la clé access sans les doubles cotes ""
+* Copiez la clé access sans les doubles cotes ``"eyJhgb..."``
 
 <h3>Nouelle requelle</h3>
 
-- Cliquez sur le bouton "+", à droite de "Key", pour ajouter un nouvel en-tête.
-
-- Dans Authorization - cliquez sur la combo type et selectionnez Bearer Token
-
-- Collez le Token à la place indiquée.
-
-- Dans le champ "Request Method", sélectionnez "GET" dans le menu déroulant.
-
-- Cliquez sur l'onglet "Body" sous l'URL de la requête.
-
-- Cliquez sur le bouton "Send" pour envoyer la requête GET à votre API Django Rest Framework avec le jeton CSRF inclus dans l'en-tête "X-CSRFToken".
-
-- Vous devriez recevoir une réponse de l'API, indiquant que la requête a été traitée avec succès ou affichant toute erreur éventuelle.
-
----
-
-<h1 align="center">Points de terminaison</h1>
-
-<h3>Méthode: GET</h3>
-
-- Récupérer la liste de projet rattaché à l'utilisateur connecté: `/projects/ `
-- Récupérer les détails d'un projet via son id: `/projects/{id}/`
-- Récupérer la liste de tous les utilisateurs attaché à un projet: `/projects/{id}/users/`
-- Récupérer la liste des issues lié à un projet: `/projects/{id}/issues/`
-- Récupérer la liste des commentaires liés à un issues: `/projects/{id}/issues/{id}/comments/`
-- Récupérer un commentaire via son id: `/projects/{id}/issues/{id}/comments/{id}`
-
-<h3>Méthode: POST</h3>
-
-- Création d'un utilisateur: `/signup/`
-- Connexion de l'utilisateur: `/login/`
-- Création d'un projet: `/projects/`
-- Création d'un contributeur à un projet: `/projects/{id}/users/`
-- Création d'un issue dans un projet: `/projects/{id}/issues/`
-- Création d'un commentaire sur un issue: `/projects/{id}/issues/comments/`
-
-<h3>Méthode: PUT</h3>
-
-- Mettre à jour un projet: `/projects/{id}/`
-- Mettre à jour un issue: `/projects/{id}/issues/{id}`
-- Mettre à jour un comment: `/projects/{id}/issues/{id}/comments/{id}`
-
-<h3>Méthode: DELETE</h3>
-
-- Supprimer un projet et ses issues: `/projects/{id}/`
-- Supprimer un utilisateur d'un projet: `/projects/{id}/users/{id}`
-- Supprimer un issue d'un projet: `/projects/{id}/issues/{id}`
-- Supprimer un comment: `/projects/{id}/issues/{id}/comments/{id}`
-
----
-
-<h1 align="center">Permissions</h1>
-
-  - Si l'utilisateur n'est pas contributeur d'un projet --> Il ne doit le voir.
-
-  - Interdiction à tout utilisateur autorisé autre que l'auteur d'émettre
-    une requete d'actualisation et suppression d'un issues/project/commentaire.
-
+* Cliquez sur le bouton "+", à droite de "Key", pour ajouter un nouvel en-tête.
+* Dans Authorization - cliquez sur la combo type et selectionnez Bearer Token
+* Collez le Token à la place indiquée.
+* Dans le champ "Request Method", sélectionnez "GET" dans le menu déroulant.
+* Cliquez sur l'onglet "Body" sous l'URL de la requête.
+* Cliquez sur le bouton "Send" pour envoyer la requête GET à votre API Django Rest Framework avec le jeton CSRF inclus dans l'en-tête "X-CSRFToken".
+* Vous devriez recevoir une réponse de l'API, indiquant que la requête a été traitée avec succès ou affichant toute erreur éventuelle.
 ---
 
 <h1 align="center">Auteur et collaborateurs</h1>
