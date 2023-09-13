@@ -162,28 +162,29 @@ Les tables choices on étés programmées de façon à pouvoir les faire évolue
 <h1 align="center">Points de terminaison</h1>
 
 * Méthode: GET
-  * Récupérer la liste de projet rattaché à l'utilisateur connecté: ``/projects/ ``
-  * Récupérer les détails d'un projet via son id: ``/projects/{id}/``
+  ** Récupérer la liste de projet rattaché à l'utilisateur connecté: ``/projects/ ``
+  ** Récupérer les détails d'un projet via son id: ``/projects/{id}/``
   * Récupérer la liste de tous les utilisateurs attaché à un projet: ``/projects/{id}/users/``
-  * Récupérer la liste des issues lié à un projet: ``/projects/{id}/issues/``
-  * Récupérer la liste des commentaires liés à un issues: ``/projects/{id}/issues/{id}/comments/``
-  * Récupérer un commentaire via son id: ``/projects/{id}/issues/{id}/comments/{id}``
+  ** Récupérer la liste des issues lié à un projet: ``/projects/{id}/issues/``
+  ** Récupérer les détails d'un issue via son id: ``/projects/{id}/issues/{id}``
+  ** Récupérer la liste des commentaires liés à un issues: ``/projects/{id}/issues/{id}/comments/``
+  ** Récupérer un commentaire via son id: ``/projects/{id}/issues/{id}/comments/{id}``
 * Méthode: POST
   * Création d'un utilisateur: ``/signup/``
   * Connexion de l'utilisateur: ``/login/``
-  * Création d'un projet: ``/projects/``
+  ** Création d'un projet: ``/projects/``
   * Création d'un contributeur à un projet: ``/projects/{id}/users/``
-  * Création d'un issue dans un projet: ``/projects/{id}/issues/``
-  * Création d'un commentaire sur un issue: ``/projects/{id}/issues/comments/``
+  ** Création d'un issue dans un projet: ``/projects/{id}/issues/``
+  ** Création d'un commentaire sur un issue: ``/projects/{id}/issues/comments/``
 * Méthode: PUT
-  * Mettre à jour un projet: ``/projects/{id}/``
-  * Mettre à jour un issue: ``/projects/{id}/issues/{id}``
-  * Mettre à jour un comment: ``/projects/{id}/issues/{id}/comments/{id}``
+  ** Mettre à jour un projet: ``/projects/{id}/``
+  ** Mettre à jour un issue: ``/projects/{id}/issues/{id}``
+  ** Mettre à jour un comment: ``/projects/{id}/issues/{id}/comments/{id}``
 * Méthode: DELETE
-  * Supprimer un projet et ses issues: ``/projects/{id}/``
+  ** Supprimer un projet et ses issues: ``/projects/{id}/``
   * Supprimer un utilisateur d'un projet: ``/projects/{id}/users/{id}``
-  * Supprimer un issue d'un projet: ``/projects/{id}/issues/{id}``
-  * Supprimer un comment: ``/projects/{id}/issues/{id}/comments/{id}``
+  ** Supprimer un issue d'un projet: ``/projects/{id}/issues/{id}``
+  ** Supprimer un comment: ``/projects/{id}/issues/{id}/comments/{id}``
 
 
 ---

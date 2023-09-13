@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
@@ -32,9 +33,10 @@ class UserViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         """
-        Returns the queryset of User objects, filtered for non-superusers.
+        Returns the queryset of User objects, filtered for non-superusers and your custom filter.
 
-        This method filters the queryset to only include User objects that are not superusers.
+        This method filters the queryset to only include User objects that are not superusers
+        and meet your custom filter conditions.
 
         Returns:
             QuerySet: The filtered queryset of User objects.
@@ -42,7 +44,11 @@ class UserViewSet(viewsets.ModelViewSet):
         user = self.request.user
         qs = super().get_queryset()
 
-        if user.is_superuser:
-            return qs
-        return qs.filter(pk=user.pk)
+        if not user.is_superuser:
+            qs = qs.filter(pk=user.pk)
+
+        project_id = self.kwargs.get('id')
+        if project_id is not None:
+            qs = qs.filter(Q(projects__id=project_id) | Q(contributed_projects__id=project_id))
+        return qs
 
