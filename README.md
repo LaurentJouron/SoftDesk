@@ -201,7 +201,7 @@ Réaliser cette opération à chaque requête.
 * Configuration de l'en-tête d'autorisation
   * Dans Postman, cliquez sur l'onglet "Authorization."
   * Dans la cellule "Type," sélectionnez "Bearer Token."
-  * Si besoin, dans la cellule "Token," collez le jeton CSRF access que vous avez obtenu précédemment.
+  * Si besoin, dans la cellule "Token," collez le jeton CSRF access.
 
 
 
