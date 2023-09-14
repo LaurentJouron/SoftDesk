@@ -131,8 +131,9 @@ Pour installer les dépendances du projet, nous utilisons l'outil pipenv que vou
   * ``Antoine``
   * ``Thierry``
   * ``Severine``
-* Des users qui ne font pas parti du staff et qui ne sont "plus" actifs:
+* Un user qui ne fait pas parti du staff qui est actif:
   * ``Virginie``
+* Un users qui a fait pas parti du staff mais qui n'est plus actif:
   * ``Stephane``
 ---
 
@@ -162,70 +163,48 @@ Les tables choices on étés programmées de façon à pouvoir les faire évolue
 <h1 align="center">Points de terminaison</h1>
 
 * Méthode: GET
-  ** Récupérer la liste de projet rattaché à l'utilisateur connecté: ``/projects/ ``
-  ** Récupérer les détails d'un projet via son id: ``/projects/{id}/``
+  * Récupérer la liste de projet rattaché à l'utilisateur connecté: ``/projects/ ``
+  * Récupérer les détails d'un projet via son id: ``/projects/{id}/``
   * Récupérer la liste de tous les utilisateurs attaché à un projet: ``/projects/{id}/users/``
-  ** Récupérer la liste des issues lié à un projet: ``/projects/{id}/issues/``
-  ** Récupérer les détails d'un issue via son id: ``/projects/{id}/issues/{id}``
-  ** Récupérer la liste des commentaires liés à un issues: ``/projects/{id}/issues/{id}/comments/``
-  ** Récupérer un commentaire via son id: ``/projects/{id}/issues/{id}/comments/{id}``
+  * Récupérer la liste des issues lié à un projet: ``/projects/{id}/issues/``
+  * Récupérer les détails d'un issue via son id: ``/projects/{id}/issues/{id}``
+  * Récupérer la liste des commentaires liés à un issues: ``/projects/{id}/issues/{id}/comments/``
+  * Récupérer un commentaire via son id: ``/projects/{id}/issues/{id}/comments/{id}``
 * Méthode: POST
   * Création d'un utilisateur: ``/signup/``
   * Connexion de l'utilisateur: ``/login/``
-  ** Création d'un projet: ``/projects/``
+  * Création d'un projet: ``/projects/``
   * Création d'un contributeur à un projet: ``/projects/{id}/users/``
-  ** Création d'un issue dans un projet: ``/projects/{id}/issues/``
-  ** Création d'un commentaire sur un issue: ``/projects/{id}/issues/comments/``
+  * Création d'un issue dans un projet: ``/projects/{id}/issues/``
+  * Création d'un commentaire sur un issue: ``/projects/{id}/issues/comments/``
 * Méthode: PUT
-  ** Mettre à jour un projet: ``/projects/{id}/``
-  ** Mettre à jour un issue: ``/projects/{id}/issues/{id}``
-  ** Mettre à jour un comment: ``/projects/{id}/issues/{id}/comments/{id}``
+  * Mettre à jour un projet: ``/projects/{id}/``
+  * Mettre à jour un issue: ``/projects/{id}/issues/{id}``
+  * Mettre à jour un comment: ``/projects/{id}/issues/{id}/comments/{id}``
 * Méthode: DELETE
-  ** Supprimer un projet et ses issues: ``/projects/{id}/``
+  * Supprimer un projet et ses issues: ``/projects/{id}/``
   * Supprimer un utilisateur d'un projet: ``/projects/{id}/users/{id}``
-  ** Supprimer un issue d'un projet: ``/projects/{id}/issues/{id}``
-  ** Supprimer un comment: ``/projects/{id}/issues/{id}/comments/{id}``
+  * Supprimer un issue d'un projet: ``/projects/{id}/issues/{id}``
+  * Supprimer un comment: ``/projects/{id}/issues/{id}/comments/{id}``
 
 
 ---
 
-<h1 align="center">Effectuer une requête POST avec le jeton CSRF (Postman)</h1>
-<h3>Obtenez le jeton CSRF</h3>
+<h1 align="center">Configuration de Postman</h1>
 
-* Ouvrez l'application Postman sur votre ordinateur.
-* Cliquez sur le bouton "New" pour créer une nouvelle requête.
-* Dans le champ "Request Name", donnez un nom significatif à votre requête.
-* Dans le champ "Request URL", saisissez l'URL : http://127.0.0.1:8000/api/token/
-* Dans le champ "Request Method", sélectionnez "POST" dans le menu déroulant.
-* Dans l'onglet Body, séléctonnez raw, coller et cliquez sur send
+Réaliser cette opération à chaque requête.
 
-```json
-{
-  "username": "Laurent",
-  "password": "test"
-}
-```
-* Cliquez sur l'onglet "Headers" sous l'URL de la requête. Vous obtiendrez votre Token.
+* Configuration de la requête
+  * Ouvrez l'application Postman sur votre ordinateur.
+  * Assurez-vous que vous avez déjà obtenu un jeton CSRF access.
 
-Exemple:
-```json
-{
-  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MTgzOTU3MiwiaWF0IjoxNjkxNzUzMTcyLCJqdGkiOiJlZTc2ODQ4YmYzNGQ0ODI1OTQ5YTcyYTE2NGI3YTJlNSIsInVzZXJfaWQiOjF9.M9eSGmRkcf1wMS2iDVe2l0PH8Zm9HDMi7eDUDF6QN_Q",
-  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxNzcxMTcyLCJpYXQiOjE2OTE3NTMxNzIsImp0aSI6IjhlNDA3MWEzYjhiNDRiMmNhOWRiM2IwZTU2MWU5OTMyIiwidXNlcl9pZCI6MX0.iT_s2w4pAhrP0kQLz3L5UV2BTLt0ycl7igIY6ZY5gX8"
-}
-```
+* Configuration de l'en-tête d'autorisation
+  * Dans Postman, cliquez sur l'onglet "Authorization."
+  * Dans la cellule "Type," sélectionnez "Bearer Token."
+  * Si besoin, dans la cellule "Token," collez le jeton CSRF access que vous avez obtenu précédemment.
 
-* Copiez la clé access sans les doubles cotes ``"eyJhgb..."``
 
-<h3>Nouelle requelle</h3>
 
-* Cliquez sur le bouton "+", à droite de "Key", pour ajouter un nouvel en-tête.
-* Dans Authorization - cliquez sur la combo type et selectionnez Bearer Token
-* Collez le Token à la place indiquée.
-* Dans le champ "Request Method", sélectionnez "GET" dans le menu déroulant.
-* Cliquez sur l'onglet "Body" sous l'URL de la requête.
-* Cliquez sur le bouton "Send" pour envoyer la requête GET à votre API Django Rest Framework avec le jeton CSRF inclus dans l'en-tête "X-CSRFToken".
-* Vous devriez recevoir une réponse de l'API, indiquant que la requête a été traitée avec succès ou affichant toute erreur éventuelle.
 ---
 
 <h1 align="center">Auteur et collaborateurs</h1>

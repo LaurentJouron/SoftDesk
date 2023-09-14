@@ -13,7 +13,7 @@ from rest_framework_nested import routers
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
-from users.views import UserViewSet
+from users.views import UserViewSet, UserProjectViewSet
 
 # Nested URLs
 router = routers.DefaultRouter()
@@ -27,7 +27,7 @@ projects_router = routers.NestedSimpleRouter(router, "projects", lookup="project
 projects_router.register("issues", IssueViewSet, basename="project-issues")
 
 # Users under projets
-projects_router.register("users", UserViewSet, basename="project-users")
+projects_router.register("users", UserProjectViewSet, basename="project-users")
 
 # Comments under issues
 issues_router = routers.NestedSimpleRouter(projects_router, "issues", lookup="issue")

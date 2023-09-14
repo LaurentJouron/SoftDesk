@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from django_filters import rest_framework as filters
 
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProjectSerializer
 from .permissions import IsOwnProfile
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
         get_queryset: Returns the queryset of User objects, filtered for non-superusers.
     """
 
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_active=True, is_staff=True)
     serializer_class = UserSerializer
     permission_classes = [
         IsAuthenticated, IsOwnProfile
@@ -45,10 +45,18 @@ class UserViewSet(viewsets.ModelViewSet):
         qs = super().get_queryset()
 
         if not user.is_superuser:
-            qs = qs.filter(pk=user.pk)
-
-        project_id = self.kwargs.get('id')
-        if project_id is not None:
-            qs = qs.filter(Q(projects__id=project_id) | Q(contributed_projects__id=project_id))
+            return qs.filter(pk=user.pk)
         return qs
+    
+class UserProjectViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.filter(is_active=True, is_staff=True)
+    serializer_class = UserProjectSerializer
+    permission_classes = [
+        IsAuthenticated, IsOwnProfile
+    ]
 
+    def get_users(self):
+        queryset = User.objects.filter(Q(projects__id=project_id) | Q(contributed_projects__id=project_id))
+        project_id = self.request.GET.get('project_id')
+        serializer = UserSerializer(queryset, many=True)
+        return serializer.data
