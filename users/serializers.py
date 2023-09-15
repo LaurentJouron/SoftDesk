@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.db.models import Q
 
 from .models import User
 
@@ -109,13 +108,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         super().update(instance, validated_data)
         instance.save()
         return instance
-
-class UserProjectSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'id',
-            'url',
-            'username',
-            'email',
-        ]
