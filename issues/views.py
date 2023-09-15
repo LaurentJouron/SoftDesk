@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
@@ -57,8 +58,10 @@ class IssueViewSet(viewsets.ModelViewSet):
             None
         """
         author = self.request.user
+        project_id = self.request.data.get("project")
+        project = get_object_or_404("projects.Project", pk=project_id)
+        issue = serializer.save(author=author, project=project)
         assignee = self.request.data.get("assignee")
-        issue = serializer.save(author=author)
         if assignee:
             try:
                 assignee = User.objects.get(username=assignee)

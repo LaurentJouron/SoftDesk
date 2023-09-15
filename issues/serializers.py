@@ -67,7 +67,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
             "is_active",
             "author",
             "assignee",
-            "project",
+            # "project",
             "comments",
         ]
 
