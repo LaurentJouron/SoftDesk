@@ -53,13 +53,14 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     type_choice = serializers.SlugRelatedField(
         queryset=TypeChoice.objects.all(), many=False, slug_field="name"
     )
-    issues = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name="issue-detail")
+    # issues = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name="issue-detail")
+    issues = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Project
         fields = [
-            "url",
             "id",
+            "url",
             "author",
             "title",
             "description",

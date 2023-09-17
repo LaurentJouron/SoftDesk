@@ -51,6 +51,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
     status = serializers.SlugRelatedField(
         many=False, slug_field="name", queryset=StatusChoice.objects.all()
     )
+    project = serializers.SlugRelatedField(read_only=True, slug_field='id')
 
     class Meta:
         model = Issue
@@ -67,7 +68,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
             "is_active",
             "author",
             "assignee",
-            # "project",
+            "project",
             "comments",
         ]
 

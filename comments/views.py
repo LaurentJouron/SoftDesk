@@ -3,6 +3,7 @@ from rest_framework import permissions
 from django_filters import rest_framework as filters
 
 from projects.permissions import IsAuthorOrReadOnly
+from issues.models import Issue
 from .models import Comment
 from .serializers import CommentSerializer
 
@@ -44,7 +45,9 @@ class CommentViewSet(viewsets.ModelViewSet):
             None
         """
         author = self.request.user
-        serializer.save(author=author)
+        issue = self.kwargs['issue_id']
+        issue = Issue.objects.get(id=issue)
+        serializer.save(author=author, issue=issue)
 
     def get_queryset(self):
         """

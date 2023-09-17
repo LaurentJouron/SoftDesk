@@ -1,11 +1,11 @@
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
 
 from users.models import User
 from projects.permissions import IsAuthorOrReadOnly
+from projects.models import Project
 from .models import Issue
 from .serializers import IssueSerializer
 
@@ -58,9 +58,9 @@ class IssueViewSet(viewsets.ModelViewSet):
             None
         """
         author = self.request.user
-        project_id = self.request.data.get("project")
-        project = get_object_or_404("projects.Project", pk=project_id)
-        issue = serializer.save(author=author, project=project)
+        project = self.kwargs['project_id']
+        project = Project.objects.get(id=project)
+        issue = serializer.save(author=author, id=project)
         assignee = self.request.data.get("assignee")
         if assignee:
             try:
