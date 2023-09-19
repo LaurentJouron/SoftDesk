@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
 from django_filters import rest_framework as filters
+from django.shortcuts import get_object_or_404
 
 from projects.permissions import IsAuthorOrReadOnly
 from issues.models import Issue
@@ -45,8 +46,8 @@ class CommentViewSet(viewsets.ModelViewSet):
             None
         """
         author = self.request.user
-        issue = self.kwargs['issue_id']
-        issue = Issue.objects.get(id=issue)
+        issue = self.kwargs['issue_pk']
+        issue = get_object_or_404(Issue, pk=issue)
         serializer.save(author=author, issue=issue)
 
     def get_queryset(self):
@@ -57,4 +58,4 @@ class CommentViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset of Comment objects.
         """
         user = self.request.user
-        return Comment.objects.filter(author=user)
+        return self.queryset.filter(author=user)

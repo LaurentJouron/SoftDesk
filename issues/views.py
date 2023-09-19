@@ -1,6 +1,7 @@
 from django.db.models import Q
 from rest_framework import permissions
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
 
 from users.models import User
@@ -45,7 +46,7 @@ class IssueViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset of Issue objects.
         """
         user = self.request.user
-        return Issue.objects.filter(Q(author=user) | Q(assignee=user))
+        return self.queryset.filter(Q(project__author=user) | Q(project__contributors=user))
 
     def perform_create(self, serializer):
         """
@@ -58,9 +59,9 @@ class IssueViewSet(viewsets.ModelViewSet):
             None
         """
         author = self.request.user
-        project = self.kwargs['project_id']
-        project = Project.objects.get(id=project)
-        issue = serializer.save(author=author, id=project)
+        project = self.kwargs['project_pk']
+        project = get_object_or_404(Project, pk=project)
+        issue = serializer.save(author=author, project=project)
         assignee = self.request.data.get("assignee")
         if assignee:
             try:

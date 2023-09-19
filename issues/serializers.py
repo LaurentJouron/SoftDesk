@@ -51,7 +51,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
     status = serializers.SlugRelatedField(
         many=False, slug_field="name", queryset=StatusChoice.objects.all()
     )
-    project = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    project = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Issue
