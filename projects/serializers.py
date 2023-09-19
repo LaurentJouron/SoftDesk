@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django_filters import rest_framework as filters
 
 from .models import Project, TypeChoice
 
@@ -13,11 +14,10 @@ class TypeChoiceSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
-
     author = serializers.ReadOnlyField(source="author.username")
     contributor = serializers.SlugRelatedField(
         many=True,
-        queryset=User.objects.all(),
+        queryset=User.objects.filter(is_active=True, is_staff=True),
         slug_field="username",
     )
     type_choice = serializers.SlugRelatedField(

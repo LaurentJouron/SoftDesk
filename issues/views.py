@@ -1,63 +1,30 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from rest_framework import viewsets
-from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
 
 from users.models import User
-from projects.permissions import IsAuthorOrReadOnly
 from projects.models import Project
+from .permissions import IsProjectAuthorOrContributor
 from .models import Issue
 from .serializers import IssueSerializer
 
 
 class IssueViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for managing issues.
-
-    This ViewSet provides CRUD operations for Issue objects with specific permissions
-    and restrictions.
-
-    Attributes:
-        queryset (QuerySet): The queryset of Issue objects.
-        serializer_class (IssueSerializer): The serializer class for Issue objects.
-        permission_classes (list): The list of permission classes for this view.
-        filter_backends (tuple): The tuple of filter backends used for filtering.
-        filterset_fields (tuple): The tuple of fields available for filtering.
-
-    Methods:
-        perform_create: Creates a new Issue with the requesting user as the author and assigns it to an optional assignee.
-        get_queryset: Returns the queryset of Issue objects authored by the requesting user.
-    """
-
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     permission_classes = [
-        permissions.IsAuthenticated, IsAuthorOrReadOnly
+        permissions.IsAuthenticated, IsProjectAuthorOrContributor
     ]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ["status"]
 
     def get_queryset(self):
-        """
-        Returns the queryset of Issue objects authored by the requesting user.
-
-        Returns:
-            QuerySet: The filtered queryset of Issue objects.
-        """
         user = self.request.user
-        return self.queryset.filter(Q(project__author=user) | Q(project__contributors=user))
+        return self.queryset.filter(Q(project__author=user) | Q(project__contributor=user)).distinct()
 
     def perform_create(self, serializer):
-        """
-        Creates a new Issue with the requesting user as the author and assigns it to an optional assignee.
-
-        Args:
-            serializer: The serializer containing issue data.
-
-        Returns:
-            None
-        """
         author = self.request.user
         project = self.kwargs['project_pk']
         project = get_object_or_404(Project, pk=project)
