@@ -37,3 +37,8 @@ class IssueViewSet(viewsets.ModelViewSet):
                 issue.save()
             except User.DoesNotExist:
                 pass
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["project_pk"] = self.kwargs['project_pk']
+        return context

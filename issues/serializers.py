@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 from .models import Issue, TagChoice, PriorityChoice, StatusChoice
@@ -12,7 +13,7 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         many=False,
         read_only=False,
         slug_field="username",
-        queryset=User.objects.filter(is_active=True, is_staff=True),
+        queryset=User.objects.all(),
     )
     comments = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="comment-detail"
@@ -49,3 +50,8 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
 
     def __str__(self):
         return self.title
+
+    def __init__(self, *args, **kwargs):
+        project_pk = self.context.get("project_pk") 
+        super().__init__(*args, **kwargs)
+        self.fields["assignee"].queryset = User.objects.filter(Q(contributed_projects__pk=project_pk) | Q(projects__pk=project_pk), is_active=True),
