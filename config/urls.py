@@ -18,8 +18,6 @@ from users.views import UserViewSet
 # Nested URLs
 router = routers.DefaultRouter()
 router.register("projects", ProjectViewSet)
-router.register("issues", IssueViewSet)
-router.register("comments", CommentViewSet)
 router.register("users", UserViewSet)
 
 # Issues under projets

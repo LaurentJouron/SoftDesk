@@ -6,14 +6,68 @@ from .models import Issue, TagChoice, PriorityChoice, StatusChoice
 
 User = get_user_model()
 
+class AssigneeRelatedField(serializers.SlugRelatedField):
+    """
+    Custom SlugRelatedField for assigning users to issues.
+
+    This field is used to represent and validate the assignee of an issue.
+    It filters the list of possible assignees based on the project's contributors
+    and authors.
+
+    Methods:
+        get_queryset(): Returns the filtered queryset of possible assignees.
+
+    """
+
+    def get_queryset(self):
+        """
+        Returns the filtered queryset of possible assignees.
+
+        Returns:
+            QuerySet: The filtered queryset of possible assignees.
+        """
+        project_pk = self.context.get("project_pk", None)
+        queryset = User.objects.filter(
+            Q(contributed_projects__pk=project_pk)
+            | Q(projects__pk=project_pk),
+            is_active=True,
+        )
+        return queryset
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializer for the Issue model.
+
+    This serializer defines how the Issue model is serialized and deserialized
+    for use in API views.
+
+    Attributes:
+        author (serializers.ReadOnlyField): A field representing the username
+            of the author.
+        assignee (AssigneeRelatedField): A field representing the assignee of
+            the issue.
+        comments (serializers.HyperlinkedRelatedField): A field representing
+            related comments.
+        tag (serializers.SlugRelatedField): A field representing the tag of the
+            issue.
+        priority (serializers.SlugRelatedField): A field representing the priority
+            of the issue.
+        status (serializers.SlugRelatedField): A field representing the status
+            of the issue.
+        project (serializers.PrimaryKeyRelatedField): A field representing the
+            project to which the issue belongs.
+
+    Meta:
+        model (Issue): The Issue model that this serializer is associated with.
+        fields (list): The fields to include in the serialized data.
+
+    """
+
     author = serializers.ReadOnlyField(source="author.username")
-    assignee = serializers.SlugRelatedField(
+    assignee = AssigneeRelatedField(
         many=False,
         read_only=False,
         slug_field="username",
-        queryset=User.objects.all(),
     )
     comments = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="comment-detail"
@@ -49,9 +103,10 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
     def __str__(self):
-        return self.title
+        """
+        String representation of the issue.
 
-    def __init__(self, *args, **kwargs):
-        project_pk = self.context.get("project_pk") 
-        super().__init__(*args, **kwargs)
-        self.fields["assignee"].queryset = User.objects.filter(Q(contributed_projects__pk=project_pk) | Q(projects__pk=project_pk), is_active=True),
+        Returns:
+            str: The title of the issue.
+        """
+        return self.title
