@@ -13,6 +13,7 @@ coreapi = "*"
 pytest = "*"
 django-filter = "*"
 drf-nested-routers = "*"
+pymemcache = "*"
 
 [dev-packages]
 
