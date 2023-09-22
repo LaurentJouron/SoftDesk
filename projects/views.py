@@ -1,4 +1,6 @@
 from django.db.models import Q
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework import permissions
 from rest_framework import viewsets
 
@@ -26,7 +28,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
         get_queryset(): Returns the queryset for the current request.
         perform_create(serializer): Performs the creation of a new project
             instance.
-
     """
 
     queryset = Project.objects.all()
@@ -47,7 +48,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset.
         """
         user = self.request.user
-        return self.queryset.filter(Q(contributor=user) | Q(author=user)).distinct()
+        queryset = Project.objects.filter(Q(contributor=user) | Q(author=user)).distinct()
+        return queryset
 
     def perform_create(self, serializer):
         """
@@ -55,7 +57,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         Args:
             serializer (ProjectSerializer): The serializer instance.
-
         """
         user = self.request.user
         serializer.save(author=user)
+        return Response(serializer, status=status.HTTP_201_CREATED)

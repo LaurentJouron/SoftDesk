@@ -11,7 +11,6 @@ class IsProjectAuthorOrContributor(permissions.BasePermission):
     Methods:
         has_object_permission(request, view, obj): Check if the user has
             permission for the specified issue object.
-
     """
 
     def has_object_permission(self, request, view, obj):
