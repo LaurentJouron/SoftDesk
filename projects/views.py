@@ -1,6 +1,4 @@
 from django.db.models import Q
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import permissions
 from rest_framework import viewsets
 
@@ -48,8 +46,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset.
         """
         user = self.request.user
-        queryset = Project.objects.filter(Q(contributor=user) | Q(author=user)).distinct()
-        return queryset
+        qs = self.queryset.filter(Q(contributor=user) | Q(author=user))
+        qs = qs.distinct()
+        return qs
 
     def perform_create(self, serializer):
         """
@@ -60,4 +59,3 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """
         user = self.request.user
         serializer.save(author=user)
-        return Response(serializer, status=status.HTTP_201_CREATED)

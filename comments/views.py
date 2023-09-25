@@ -1,9 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework.response import Response
 from django_filters import rest_framework as filters
 
 from issues.models import Issue
@@ -52,7 +50,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         issue = self.kwargs['issue_pk']
         issue = get_object_or_404(Issue, pk=issue)
         serializer.save(author=author, issue=issue)
-        return Response(serializer, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
         """
@@ -66,5 +63,9 @@ class CommentViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset.
         """
         user = self.request.user
-        queryset = Comment.objects.filter(Q(issue__project__author=user) | Q(issue__project__contributor=user))
-        return queryset
+        qs = super().get_queryset()
+        qs = qs.filter(
+            Q(issue__project__author=user) | 
+            Q(issue__project__contributor=user)
+            )
+        return qs

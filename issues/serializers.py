@@ -26,12 +26,14 @@ class AssigneeRelatedField(serializers.SlugRelatedField):
         Returns:
             QuerySet: The filtered queryset of possible assignees.
         """
+        queryset = User.objects.all()
         project_pk = self.context.get("project_pk", None)
-        queryset = User.objects.filter(
-            Q(contributed_projects__pk=project_pk)
-            | Q(projects__pk=project_pk),
-            is_active=True,
-        )
+        if project_pk:
+            queryset = queryset.filter(
+                Q(contributed_projects__pk=project_pk)
+                | Q(projects__pk=project_pk),
+                is_active=True,
+            )
         return queryset
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):

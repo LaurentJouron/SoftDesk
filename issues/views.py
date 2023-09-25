@@ -1,9 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.response import Response
 from django_filters import rest_framework as filters
 
 from users.models import User
@@ -55,8 +53,11 @@ class IssueViewSet(viewsets.ModelViewSet):
             QuerySet: The filtered queryset.
         """
         user = self.request.user
-        queryset = Issue.objects.filter(Q(project__author=user) | Q(project__contributor=user)).distinct()
-        return queryset
+        qs = self.queryset.filter(
+            Q(project__author=user) | Q(project__contributor=user)
+        )
+        qs = qs.distinct()
+        return qs
 
     def perform_create(self, serializer):
         """
@@ -75,7 +76,6 @@ class IssueViewSet(viewsets.ModelViewSet):
                 assignee = User.objects.get(username=assignee)
                 issue.assignee = assignee
                 issue.save()
-                return Response(issue, status=status.HTTP_201_CREATED)
             except User.DoesNotExist:
                 pass
 
@@ -87,5 +87,21 @@ class IssueViewSet(viewsets.ModelViewSet):
             dict: The context for the serializer.
         """
         context = super().get_serializer_context()
-        context["project_pk"] = self.kwargs['project_pk']
+        context["project_pk"] = self.kwargs.get('project_pk')
         return context
+    
+class IssueReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Issue.objects.all()
+    serializer_class = IssueSerializer
+    permission_classes = [
+        permissions.IsAuthenticated, IsProjectAuthorOrContributor
+    ]
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = self.queryset.filter(
+            Q(project__author=user) | Q(project__contributor=user)
+        )
+        qs = qs.distinct()
+        return qs
+    
