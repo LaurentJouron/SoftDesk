@@ -6,6 +6,7 @@ from .models import Issue, TagChoice, PriorityChoice, StatusChoice
 
 User = get_user_model()
 
+
 class AssigneeRelatedField(serializers.SlugRelatedField):
     """
     Custom SlugRelatedField for assigning users to issues.
@@ -26,15 +27,15 @@ class AssigneeRelatedField(serializers.SlugRelatedField):
         Returns:
             QuerySet: The filtered queryset of possible assignees.
         """
-        queryset = User.objects.all()
+        qs = User.objects.all()
         project_pk = self.context.get("project_pk", None)
         if project_pk:
-            queryset = queryset.filter(
-                Q(contributed_projects__pk=project_pk)
-                | Q(projects__pk=project_pk),
+            qs = qs.filter(
+                Q(contributed_projects__pk=project_pk) | Q(projects__pk=project_pk),
                 is_active=True,
             )
-        return queryset
+        return qs
+
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):
     """

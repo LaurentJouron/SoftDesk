@@ -10,26 +10,26 @@ from rest_framework_nested import routers
 
 from projects.views import ProjectViewSet
 from issues.views import IssueViewSet, IssueReadOnlyViewSet
-from comments.views import CommentViewSet
+from comments.views import CommentViewSet, CommentReadOnlyViewSet
 from users.views import UserViewSet
 
 # Nested URLs
 router = routers.DefaultRouter()
-router.register("projects", ProjectViewSet)
+router.register(r"projects", ProjectViewSet)
 router.register("issues", IssueReadOnlyViewSet)
-router.register("comments", CommentViewSet)
+router.register("comments", CommentReadOnlyViewSet)
 router.register("users", UserViewSet)
 
 # Issues under projets
 projects_router = routers.NestedSimpleRouter(router, "projects", lookup="project")
-projects_router.register("issues", IssueViewSet, basename="project-issues")
+projects_router.register(r"issues", IssueViewSet, basename="project-issues")
 
 # Users under projets
-projects_router.register("users", UserViewSet, basename="project-users")
+projects_router.register(r"users", UserViewSet, basename="project-users")
 
 # Comments under issues
 issues_router = routers.NestedSimpleRouter(projects_router, "issues", lookup="issue")
-issues_router.register("comments", CommentViewSet, basename="issue-comments")
+issues_router.register(r"comments", CommentViewSet, basename="issue-comments")
 
 # Base and admin Router
 urlpatterns = [
@@ -38,9 +38,9 @@ urlpatterns = [
 
 # Router applications
 urlpatterns += [
-    path("", include(router.urls)),
-    path("", include(projects_router.urls)),
-    path("", include(issues_router.urls)),
+    path(r"", include(router.urls)),
+    path(r"", include(projects_router.urls)),
+    path(r"", include(issues_router.urls)),
 ]
 
 # Authentification and Token management

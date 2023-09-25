@@ -1,6 +1,22 @@
 from rest_framework import serializers
+from django.db.models import Q
+from django.contrib.auth import get_user_model
 
 from .models import Comment
+
+User = get_user_model()
+
+
+class AuthorRelatedField(serializers.SlugRelatedField):
+    def get_queryset(self):
+        qs = User.objects.all()
+        issue_pk = self.context.get("issue_pk", None)
+        if issue_pk:
+            qs = qs.filter(
+                Q(author__issues__pk=issue_pk) | Q(author__assignee__issue__pk=issue_pk)
+            )
+        return qs
+
 
 class CommentSerializer(serializers.ModelSerializer):
     """
@@ -21,19 +37,17 @@ class CommentSerializer(serializers.ModelSerializer):
 
     """
 
-    author = serializers.SlugRelatedField(
-        many=False, read_only=True, slug_field='username'
-    )
-    issue = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    author = AuthorRelatedField(many=False, read_only=True, slug_field="username")
+    issue = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
         model = Comment
         fields = [
-            'id',
-            'url',
-            'description',
-            'author',
-            'created',
-            'modified',
-            'issue',
+            "id",
+            "url",
+            "description",
+            "author",
+            "created",
+            "modified",
+            "issue",
         ]

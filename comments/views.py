@@ -9,6 +9,7 @@ from .permissions import IsIssueAuthor
 from .models import Comment
 from .serializers import CommentSerializer
 
+
 class CommentViewSet(viewsets.ModelViewSet):
     """
     Viewset for managing Comment instances.
@@ -34,9 +35,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [
-        permissions.IsAuthenticated, IsIssueAuthor
-    ]
+    permission_classes = [permissions.IsAuthenticated, IsIssueAuthor]
     filter_backends = (filters.DjangoFilterBackend,)
 
     def perform_create(self, serializer):
@@ -47,7 +46,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             serializer (CommentSerializer): The serializer instance.
         """
         author = self.request.user
-        issue = self.kwargs['issue_pk']
+        issue = self.kwargs["issue_pk"]
         issue = get_object_or_404(Issue, pk=issue)
         serializer.save(author=author, issue=issue)
 
@@ -65,7 +64,19 @@ class CommentViewSet(viewsets.ModelViewSet):
         user = self.request.user
         qs = super().get_queryset()
         qs = qs.filter(
-            Q(issue__project__author=user) | 
-            Q(issue__project__contributor=user)
-            )
+            Q(issue__project__author=user) | Q(issue__project__contributor=user)
+        )
+        return qs
+
+
+class CommentReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated, IsIssueAuthor]
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = self.queryset.filter(
+            Q(issue__project__author=user) | Q(issue__project__contributor=user)
+        )
         return qs
