@@ -10,6 +10,7 @@ from .permissions import IsProjectAuthorOrContributor
 from .models import Issue
 from .serializers import IssueSerializer
 
+
 class IssueViewSet(viewsets.ModelViewSet):
     """
     Viewset for managing Issue instances.
@@ -35,9 +36,7 @@ class IssueViewSet(viewsets.ModelViewSet):
 
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [
-        permissions.IsAuthenticated, IsProjectAuthorOrContributor
-    ]
+    permission_classes = [permissions.IsAuthenticated, IsProjectAuthorOrContributor]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ["status"]
 
@@ -67,7 +66,7 @@ class IssueViewSet(viewsets.ModelViewSet):
             serializer (IssueSerializer): The serializer instance.
         """
         author = self.request.user
-        project = self.kwargs['project_pk']
+        project = self.kwargs["project_pk"]
         project = get_object_or_404(Project, pk=project)
         issue = serializer.save(author=author, project=project)
         assignee = self.request.data.get("assignee")
@@ -87,21 +86,44 @@ class IssueViewSet(viewsets.ModelViewSet):
             dict: The context for the serializer.
         """
         context = super().get_serializer_context()
-        context["project_pk"] = self.kwargs.get('project_pk')
+        context["project_pk"] = self.kwargs.get("project_pk")
         return context
-    
+
+
 class IssueReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Provides read-only access to issues associated with a project.
+
+    This viewset allows authenticated users to retrieve a list of issues
+    associated with a project for which they are either the author or a
+    contributor.
+
+    Attributes:
+        queryset (QuerySet): The base queryset for issues.
+        serializer_class (Serializer): The serializer class for issues.
+        permission_classes (list): The permission classes required for access.
+
+    Methods:
+        get_queryset(self): Returns the filtered queryset of issues.
+    """
+
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [
-        permissions.IsAuthenticated, IsProjectAuthorOrContributor
-    ]
+    permission_classes = [permissions.IsAuthenticated, IsProjectAuthorOrContributor]
 
     def get_queryset(self):
+        """
+        Returns the filtered queryset of issues.
+
+        This method filters the list of issues to include only those associated
+        with a project for which the user is either the author or a contributor.
+
+        Returns:
+            QuerySet: The filtered queryset of issues.
+        """
         user = self.request.user
         qs = self.queryset.filter(
             Q(project__author=user) | Q(project__contributor=user)
         )
         qs = qs.distinct()
         return qs
-    

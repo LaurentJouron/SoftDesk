@@ -22,7 +22,11 @@ class AssigneeRelatedField(serializers.SlugRelatedField):
 
     def get_queryset(self):
         """
-        Returns the filtered queryset of possible assignees.
+        Returns the filtered queryset of possible assignees for a project.
+
+        This method filters the list of possible assignees based on the project
+        associated with the request. It includes users who have contributed to the
+        project or users who are associated with the project in any way.
 
         Returns:
             QuerySet: The filtered queryset of possible assignees.

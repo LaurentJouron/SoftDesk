@@ -70,11 +70,37 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class CommentReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    A read-only viewset for retrieving comments associated with issues.
+
+    This viewset allows authenticated users to retrieve comments associated with
+    issues. Users can access comments on issues if they are either the author of
+    the issue's project or a contributor to the project.
+
+    Attributes:
+        queryset (QuerySet): The base queryset for retrieving comments.
+        serializer_class (Serializer): The serializer class for comments.
+        permission_classes (list): The permission classes required to access this viewset.
+
+    Methods:
+        get_queryset(self): Returns the filtered queryset of accessible comments.
+    """
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated, IsIssueAuthor]
 
     def get_queryset(self):
+        """
+        Returns the filtered queryset of accessible comments.
+
+        This method filters the list of comments to include only those associated
+        with issues that belong to projects where the user is either the author
+        of the project or a contributor.
+
+        Returns:
+            QuerySet: The filtered queryset of accessible comments.
+        """
         user = self.request.user
         qs = self.queryset.filter(
             Q(issue__project__author=user) | Q(issue__project__contributor=user)

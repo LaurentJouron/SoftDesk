@@ -5,6 +5,7 @@ from .models import Project, TypeChoice
 
 User = get_user_model()
 
+
 class TypeChoiceSerializer(serializers.ModelSerializer):
     """
     Serializer for the TypeChoice model.
@@ -22,6 +23,7 @@ class TypeChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeChoice
         fields = ("id", "name")
+
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     """
@@ -56,7 +58,9 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     type_choice = serializers.SlugRelatedField(
         queryset=TypeChoice.objects.all(), many=False, slug_field="name"
     )
-    issues = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name="issue-detail")
+    issues = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="issue-detail"
+    )
 
     class Meta:
         model = Project

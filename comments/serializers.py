@@ -8,7 +8,31 @@ User = get_user_model()
 
 
 class AuthorRelatedField(serializers.SlugRelatedField):
+    """
+    A SlugRelatedField for selecting the author of an issue.
+
+    This field allows selecting the author of an issue from a list of users.
+    The list of users is filtered to include only those who are associated with
+    the issue, either as the author of the issue or as an assignee of the issue.
+
+    Attributes:
+        context (dict): The context passed to the field.
+
+    Methods:
+        get_queryset(self): Returns the filtered queryset of possible authors.
+    """
+
     def get_queryset(self):
+        """
+        Returns the filtered queryset of possible authors.
+
+        This method filters the list of users to include only those who are
+        associated with the issue specified in the context. Users are included
+        if they are either the author of the issue or an assignee of the issue.
+
+        Returns:
+            QuerySet: The filtered queryset of possible authors.
+        """
         qs = User.objects.all()
         issue_pk = self.context.get("issue_pk", None)
         if issue_pk:
