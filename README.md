@@ -22,6 +22,8 @@
 
 Cet exercice a été réalisé dans le cadre d'une formation
 
+Version 0.0.01
+
 ---
 
 <h1 align="center">But de l'application</h1>
@@ -96,12 +98,6 @@ La société SoftDesk, spécialisée dans l'édition de logiciels de développem
 
 <h1 align="center">Installation de l'API</h1>
 
-Pour installer les dépendances du projet, nous utilisons l'outil pipenv que vous devez avoir pré-installé sur votre ordinateur.
-<a href="https://github.com/pypa/pipx" title="pypa/pipx" target="_blank">Documentation pypa/pipx</a>
-
-  * ``pip install pipx``
-  * ``pipx ensurepath``
-  * ``pipx install pipenv``
 * Cloner le projet avec l'url suivante :
   * ``git clone https://github.com/LaurentJouron/SoftDesk.git``
 * Déplacez vous dans le dossier:
@@ -131,34 +127,12 @@ Pour installer les dépendances du projet, nous utilisons l'outil pipenv que vou
   * ``Antoine``
   * ``Thierry``
   * ``Severine``
-* Un user qui ne fait pas parti du staff qui est actif:
-  * ``Virginie``
+
 * Un users qui a fait pas parti du staff mais qui n'est plus actif:
+  * ``Virginie``
   * ``Stephane``
 ---
 
-<h1 align="center">Détails choices</h3>
-Les tables choices on étés programmées de façon à pouvoir les faire évoluer si besoin. En utilisant postman, il faut saisir les IDs.
-
-* Les types qui se trouve sur projects:
-  * ``1: Back-end``
-  * ``2: Front-end``
-  * ``3: iOS``
-  * ``4: Android``
-* Les tag qui se trouve sur issues:
-  * ``1: Bug``
-  * ``2: Feature``
-  * ``3: Task``
-- Les status qui se trouve sur issues:
-  * ``1: To do``
-  * ``2: In progress``
-  * ``3: Finished``
-* Les priority qui se trouve sur issues:
-  * ``1: Low``
-  * ``2: Medium``
-  * ``3: High``
-
----
 
 <h1 align="center">Points de terminaison</h1>
 
@@ -192,18 +166,16 @@ Les tables choices on étés programmées de façon à pouvoir les faire évolue
 
 <h1 align="center">Configuration de Postman</h1>
 
-Réaliser cette opération à chaque requête.
+Réaliser cette opération à chaque requête si nécessaire.
 
 * Configuration de la requête
   * Ouvrez l'application Postman sur votre ordinateur.
-  * Assurez-vous que vous avez déjà obtenu un jeton CSRF access.
+  * Assurez-vous que vous avez déjà obtenu un jeton ``CSRF access``
 
 * Configuration de l'en-tête d'autorisation
-  * Dans Postman, cliquez sur l'onglet "Authorization."
-  * Dans la cellule "Type," sélectionnez "Bearer Token."
-  * Si besoin, dans la cellule "Token," collez le jeton CSRF access.
-
-
+  * Dans Postman, cliquez sur l'onglet ``Authorization``
+  * Dans la cellule ``Type`` sélectionnez ``Bearer Token``
+  * Si besoin, dans la cellule ``Token``, collez le jeton ``CSRF access``
 
 ---
 
