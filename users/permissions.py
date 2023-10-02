@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class IsOwnProfile(permissions.BasePermission):
     """
     Custom permission to check if the user owns the profile.

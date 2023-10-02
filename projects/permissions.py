@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class IsAuthorOrReadOnly(permissions.BasePermission):
     """
     Custom permission to check if the user is the author or has read-only access.
