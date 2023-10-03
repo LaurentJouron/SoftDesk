@@ -12,8 +12,8 @@ class AssigneeRelatedField(serializers.SlugRelatedField):
     Custom SlugRelatedField for assigning users to issues.
 
     This field is used to represent and validate the assignee of an issue.
-    It filters the list of possible assignees based on the project's contributors
-    and authors.
+    It filters the list of possible assignees based on the project's
+    contributors and authors.
 
     Methods:
         get_queryset(): Returns the filtered queryset of possible assignees.
@@ -25,8 +25,8 @@ class AssigneeRelatedField(serializers.SlugRelatedField):
         Returns the filtered queryset of possible assignees for a project.
 
         This method filters the list of possible assignees based on the project
-        associated with the request. It includes users who have contributed to the
-        project or users who are associated with the project in any way.
+        associated with the request. It includes users who have contributed to
+        the project or users who are associated with the project in any way.
 
         Returns:
             QuerySet: The filtered queryset of possible assignees.
@@ -35,9 +35,10 @@ class AssigneeRelatedField(serializers.SlugRelatedField):
         project_pk = self.context.get("project_pk", None)
         if project_pk:
             qs = qs.filter(
-                Q(contributed_projects__pk=project_pk) | Q(projects__pk=project_pk),
+                Q(contributed_projects__pk=project_pk)
+                | Q(projects__pk=project_pk),
                 is_active=True,
-            )
+            ).distinct()
         return qs
 
 
@@ -57,8 +58,8 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
             related comments.
         tag (serializers.SlugRelatedField): A field representing the tag of the
             issue.
-        priority (serializers.SlugRelatedField): A field representing the priority
-            of the issue.
+        priority (serializers.SlugRelatedField): A field representing the
+        priority of the issue.
         status (serializers.SlugRelatedField): A field representing the status
             of the issue.
         project (serializers.PrimaryKeyRelatedField): A field representing the

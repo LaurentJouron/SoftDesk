@@ -12,8 +12,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     Attributes:
         projects (serializers.HyperlinkedRelatedField): A field representing
             the user's contributed projects.
-        password1 (serializers.CharField): A field for the first password input.
-        password2 (serializers.CharField): A field for the second password input.
+        password1 (serializers.CharField): A field for the first password
+        input.
+        password2 (serializers.CharField): A field for the second password
+        input.
 
     Meta:
         model (User): The User model that this serializer is associated with.

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Comment(models.Model):
     """
     Model for representing comments on issues.

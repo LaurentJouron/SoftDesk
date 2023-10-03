@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from projects.models import Project
 
+
 class PriorityChoice(models.Model):
     """
     Model for defining issue priority choices.
@@ -85,7 +86,8 @@ class Issue(models.Model):
     Model for representing issues.
 
     This model represents issues, including their title, description, priority,
-    tag, status, creation and modification timestamps, author, project, and assignee.
+    tag, status, creation and modification timestamps, author, project, and
+    assignee.
 
     Attributes:
         title (str): The title of the issue.

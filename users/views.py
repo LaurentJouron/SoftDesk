@@ -6,6 +6,7 @@ from .models import User
 from .serializers import UserSerializer
 from .permissions import IsOwnProfile
 
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     Viewset for managing User instances.

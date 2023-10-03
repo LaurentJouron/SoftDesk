@@ -36,7 +36,10 @@ class IssueViewSet(viewsets.ModelViewSet):
 
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [permissions.IsAuthenticated, IsProjectAuthorOrContributor]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsProjectAuthorOrContributor
+        ]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ["status"]
 
@@ -109,14 +112,18 @@ class IssueReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [permissions.IsAuthenticated, IsProjectAuthorOrContributor]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsProjectAuthorOrContributor
+        ]
 
     def get_queryset(self):
         """
         Returns the filtered queryset of issues.
 
         This method filters the list of issues to include only those associated
-        with a project for which the user is either the author or a contributor.
+        with a project for which the user is either the author or a
+        contributor.
 
         Returns:
             QuerySet: The filtered queryset of issues.

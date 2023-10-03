@@ -6,6 +6,7 @@ from .models import Project
 from .serializers import ProjectSerializer
 from .permissions import IsAuthorOrReadOnly
 
+
 class ProjectViewSet(viewsets.ModelViewSet):
     """
     Viewset for managing Project instances.

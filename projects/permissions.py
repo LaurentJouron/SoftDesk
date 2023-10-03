@@ -3,7 +3,8 @@ from rest_framework import permissions
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
     """
-    Custom permission to check if the user is the author or has read-only access.
+    Custom permission to check if the user is the author or has read-only
+    access.
 
     This permission class is used to determine whether a user has permission
     to modify a project instance. Users can only modify projects if they are

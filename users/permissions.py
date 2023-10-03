@@ -25,6 +25,7 @@ class IsOwnProfile(permissions.BasePermission):
             obj: The object being accessed (in this case, a user profile).
 
         Returns:
-            bool: True if the user is the owner of the profile, False otherwise.
+            bool: True if the user is the owner of the profile, False
+            otherwise.
         """
         return obj.author == request.user

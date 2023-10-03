@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class TypeChoice(models.Model):
     """
     Model for defining project types.
@@ -41,7 +42,8 @@ class Project(models.Model):
         created (datetime): The timestamp when the project was created.
         modified (datetime): The timestamp when the project was last modified.
         author (User): The user who created the project.
-        contributor (User): The users who have contributed to the project (optional).
+        contributor (User): The users who have contributed to the project
+        (optional).
 
     Methods:
         __str__(): Returns a string representation of the project.
